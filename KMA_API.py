@@ -14,14 +14,14 @@ endpoints = {
         4: {"url": aws_base_url + f"_vis?authKey={auth}", "filename": "AWS_vis", "filetype":"csv", "desc": "AWS 가시거리"},
 }
 
-def get_data(choice, out_dir):
-    if choice not in endpoints:
+def get_data(endpoint, out_dir):
+    if endpoint not in endpoints:
         print("Wrong choice")
         return
 
-    url = endpoints[choice]["url"]
-    filename = endpoints[choice]["filename"]
-    filetype = endpoints[choice]["filetype"]
+    url = endpoints[endpoint]["url"]
+    filename = endpoints[endpoint]["filename"]
+    filetype = endpoints[endpoint]["filetype"]
 
     try:
         response = requests.get(url)
@@ -41,7 +41,6 @@ def get_data(choice, out_dir):
             f.write(response.text)
 
     convert_to_csv(temp_path, save_path)
-
 
 def get_all_data():
     timestamp = time.strftime("%m%d%H%M%S")
@@ -97,7 +96,6 @@ def convert_to_csv(infile_path, outfile_path):
             writer.writerow(row)
 
     os.remove(infile_path)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
