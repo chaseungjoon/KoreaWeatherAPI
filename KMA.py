@@ -5,8 +5,8 @@ import time
 auth = os.getenv("KMA_WEATHER_TOKEN")
 aws_base_url = "https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min"
 endpoints = {
-        1: {"url": aws_base_url + f"?authKey={auth}", "filename": "AWS", "filetype": ".csv"},
-        2: {"url": aws_base_url + f"_cloud?&authKey={auth}", "filename": "AWS_cloud", "filetype":".csv"},
+        1: {"url": aws_base_url + f"?authKey={auth}", "filename": "AWS", "filetype": "csv"},
+        2: {"url": aws_base_url + f"_cloud?&authKey={auth}", "filename": "AWS_cloud", "filetype":"csv"},
 }
 
 def get_data(choice):
