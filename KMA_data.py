@@ -1,6 +1,7 @@
 import requests
 import os
 import time
+import argparse
 
 auth = os.getenv("KMA_WEATHER_TOKEN")
 data_dir = "weather_data"
@@ -12,7 +13,7 @@ endpoints = {
         4: {"url": aws_base_url + f"_vis?authKey={auth}", "filename": "AWS_vis", "filetype":"csv", "desc": "AWS 가시거리"},
 }
 
-def get_data(choice):
+def get_data(choice, out_dir):
     if choice not in endpoints:
         print("Wrong choice")
         return
@@ -28,7 +29,8 @@ def get_data(choice):
         return
 
     timestamp = time.strftime("%m%d%H%M%S")
-    save_path = os.path.join(os.getcwd(), data_dir, f"{filename}_{timestamp}.{filetype}")
+    os.makedirs(os.path.join(os.getcwd(),out_dir), exist_ok=True)
+    save_path = os.path.join(os.getcwd(), out_dir, f"{filename}_{timestamp}.{filetype}")
 
     if filetype == "csv":
         response.encoding = 'euc-kr'
@@ -37,12 +39,15 @@ def get_data(choice):
 
 
 if __name__ == "__main__":
-    while True:
-        print("Choose an option"
-              "\n0. exit")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--choice', '-c', type=int, choices=endpoints.keys())
+    parser.add_argument('--list', '-l', action='store_true')
+    parser.add_argument('--out', '-o', type=str, default=data_dir)
+    args = parser.parse_args()
+
+    if args.list:
+        print("Available endpoints:")
         for key, val in endpoints.items():
             print(f"{key}. {val['desc']}")
-        option = int(input(">> "))
-        if option == 0:
-            break
-        get_data(option)
+    elif args.choice:
+        get_data(args.choice, args.out)
