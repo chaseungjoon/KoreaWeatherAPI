@@ -9,7 +9,7 @@
 
 ---
 
-### 1. AWS 매분자료 [AWS_MMDDHHMISS]
+### 1. AWS 매분자료 [AWS_MMDDHHMMSS.csv]
 
 * 풍향, 풍속 - 1분 평균/10분 평균/최대 순간 
 * 기온 - 1분 평균
@@ -38,7 +38,7 @@
 
 ---
 
-### 2. AWS 운고 운량 [AWS_cloud_MMDDHHMISS]
+### 2. AWS 운고 운량 [AWS_cloud_MMDDHHMMSS.csv]
 
 * (하,중,상)층 운고, 전운량
 
@@ -51,7 +51,7 @@
 
 ---
 
-### 3. AWS 초상온도 [AWS_temp_MMDDHHMISS]
+### 3. AWS 초상온도 [AWS_temp_MMDDHHMMSS.csv]
 
 > **다 1분 평균**
 
@@ -83,7 +83,7 @@
 
 ---
 
-### 4. AWS 시정자료 (가시거리) [AWS_vis_MMDDHHMISS]
+### 4. AWS 시정자료 (가시거리) [AWS_vis_MMDDHHMMSS.csv]
 
 * 가시거리 (1분/10분평균)
 * 안개 (현천)
