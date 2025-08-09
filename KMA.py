@@ -28,7 +28,7 @@ def get_data(choice):
         return
 
     timestamp = time.strftime("%m%d%H%M%S")
-    save_path = os.path.join(os.getcwd(), "Weather_Data", f"{filename}_{timestamp}.{filetype}")
+    save_path = os.path.join(os.getcwd(), "weather_data", f"{filename}_{timestamp}.{filetype}")
     with open(save_path, "w", encoding="utf-8") as f:
         f.write(response.text)
 
