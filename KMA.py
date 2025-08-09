@@ -3,6 +3,7 @@ import os
 import time
 
 auth = os.getenv("KMA_WEATHER_TOKEN")
+data_dir = "weather_data"
 aws_base_url = "https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min"
 endpoints = {
         1: {"url": aws_base_url + f"?authKey={auth}", "filename": "AWS", "filetype": "csv", "desc" : "AWS 매분자료"},
@@ -22,15 +23,18 @@ def get_data(choice):
 
     try:
         response = requests.get(url)
-        response.encoding = 'euc-kr'
     except Exception as e:
         print(e)
         return
 
     timestamp = time.strftime("%m%d%H%M%S")
-    save_path = os.path.join(os.getcwd(), "weather_data", f"{filename}_{timestamp}.{filetype}")
-    with open(save_path, "w", encoding="utf-8") as f:
-        f.write(response.text)
+    save_path = os.path.join(os.getcwd(), data_dir, f"{filename}_{timestamp}.{filetype}")
+
+    if filetype == "csv":
+        response.encoding = 'euc-kr'
+        with open(save_path, "w", encoding="utf-8") as f:
+            f.write(response.text)
+
 
 if __name__ == "__main__":
     while True:
