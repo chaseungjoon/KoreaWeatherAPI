@@ -38,6 +38,12 @@ def get_data(choice, out_dir):
             f.write(response.text)
 
 
+def get_all_data():
+    timestamp = time.strftime("%m%d%H%M%S")
+    out_dir = os.path.join(os.getcwd(), "weather_data", timestamp)
+    for ep in endpoints:
+        get_data(ep, out_dir)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--choice', '-c', type=int, choices=endpoints.keys())
