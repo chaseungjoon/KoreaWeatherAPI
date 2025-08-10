@@ -1,3 +1,9 @@
+    기상청 OpenAPI - 기온, 기압, 운고, 운량, 가시거리
+    
+    NASA FIRMS API - 화재 모니터링
+
+---
+
 # NASA FIRMS API
 
 ## 인공위성 화재 모니터링
