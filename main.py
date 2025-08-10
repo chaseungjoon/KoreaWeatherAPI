@@ -10,7 +10,7 @@ from grid_data import load_grid
 
     get_all_data()
 
-3. 기상청의 grid정보 dictionary로 저장
+3. 기상청의 grid정보 저장 (dicts inside a list)
 
     grid = load_grid()
 

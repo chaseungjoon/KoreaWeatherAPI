@@ -9,9 +9,9 @@ def load_grid():
         reader = csv.DictReader(f)
         for row in reader:
             result.append({
-                'ID': row['ID'],
-                'LON': row['LON'],
-                'LAT': row['LAT'],
+                'ID': int(row['ID']),
+                'LON': float(row['LON']),
+                'LAT': float(row['LAT']),
                 'NAME': row['NAME']
             })
     return result
