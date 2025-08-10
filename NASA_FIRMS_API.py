@@ -28,6 +28,3 @@ def get_firms_data():
     except Exception as e:
         print(e)
         return
-
-if __name__ == "__main__":
-    get_firms_data()
