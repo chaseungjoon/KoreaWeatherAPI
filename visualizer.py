@@ -1,0 +1,43 @@
+import os
+import folium
+from csv_reader import load_grid, load_fire_grid
+
+
+def map_grid():
+    save_path = os.path.join(os.getcwd(), 'map_data/map.html')
+
+    grid = load_grid()
+    center_lat = sum(d['LAT'] for d in grid) / len(grid)
+    center_lon = sum(d['LON'] for d in grid) / len(grid)
+
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
+
+    for d in grid:
+        folium.Marker(
+            location=[d['LAT'], d['LON']],
+            popup=f"{d['NAME']} (ID: {d['ID']})",
+            icon=folium.Icon(color="blue", icon="info-sign")
+        ).add_to(m)
+
+    m.save(save_path)
+
+def fire_grid():
+    save_path = os.path.join(os.getcwd(), 'map_data/fire_map.html')
+
+    grid = load_fire_grid()
+    center_lat = sum(d['LAT'] for d in grid) / len(grid)
+    center_lon = sum(d['LON'] for d in grid) / len(grid)
+
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
+
+    for d in grid:
+        folium.Marker(
+            location=[d['LAT'], d['LON']],
+            popup=f"{d['DATE']}-{d['TIME']}\nFRP: {d['FRP']} Conf: {d['CONFIDENCE']}",
+            icon=folium.Icon(color="red", icon="info-sign")
+        ).add_to(m)
+
+    m.save(save_path)
+
+if __name__ == '__main__':
+    fire_grid()

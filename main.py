@@ -1,5 +1,5 @@
 from KMA_API import get_data, get_all_data
-from grid_data import load_grid
+from csv_reader import load_grid
 
 """
 1. get_data : 특정 정보 받아오기(KMA_API.py의 endpoints참조). out dir 지정 필요
