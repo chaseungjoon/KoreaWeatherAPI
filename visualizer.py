@@ -3,7 +3,7 @@ import folium
 from csv_reader import load_grid, load_fire_grid
 
 
-def map_grid():
+def draw_grid():
     save_path = os.path.join(os.getcwd(), 'map_data/map.html')
 
     grid = load_grid()
@@ -21,7 +21,7 @@ def map_grid():
 
     m.save(save_path)
 
-def fire_grid():
+def draw_fire_grid():
     save_path = os.path.join(os.getcwd(), 'map_data/fire_map.html')
 
     grid = load_fire_grid()
@@ -38,6 +38,3 @@ def fire_grid():
         ).add_to(m)
 
     m.save(save_path)
-
-if __name__ == '__main__':
-    fire_grid()
