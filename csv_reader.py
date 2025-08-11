@@ -1,20 +1,18 @@
 import csv
 import os
-
-grid_file_path = os.path.join(os.getcwd(), "map_data/grid.csv")
+from config import GRID_PATH, FIRE_DATA_DIR
 
 def get_recent_fire():
-    fire_data_dir = os.path.join(os.getcwd(), "fire_data")
-    csv_files = [f for f in os.listdir(fire_data_dir) if f.startswith("fire_data_") and f.endswith(".csv")]
+    csv_files = [f for f in os.listdir(FIRE_DATA_DIR) if f.startswith("fire_data_") and f.endswith(".csv")]
     if not csv_files:
         return None
 
     latest_file = max(csv_files)
-    return os.path.join(fire_data_dir, latest_file)
+    return os.path.join(FIRE_DATA_DIR, latest_file)
 
 def load_grid():
     result = []
-    with open(grid_file_path, 'r', encoding='utf-8') as f:
+    with open(GRID_PATH, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
             result.append({

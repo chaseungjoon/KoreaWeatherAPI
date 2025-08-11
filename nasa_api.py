@@ -3,17 +3,16 @@ import os
 import pandas as pd
 import time
 import requests
-
-MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
-kor_url = 'https://firms.modaps.eosdis.nasa.gov/api/country/csv/' + MAP_KEY + '/MODIS_NRT/KOR/3'
+from config import NASA_FIRMS_URL, FIRE_DATA_DIR
 
 def get_firms_data():
     try:
-        response = requests.get(kor_url)
+        response = requests.get(NASA_FIRMS_URL)
         csv_data = io.StringIO(response.text)
         df_kor = pd.read_csv(csv_data)
         timestamp = time.strftime("%m%d%H%M%S")
-        save_path = "fire_data/fire_data_" + timestamp + ".csv"
+        save_filename = "fire_data_"+timestamp+".csv"
+        save_path = os.path.join(FIRE_DATA_DIR, save_filename)
 
         if not df_kor.empty:
             time_str = df_kor['acq_time'].astype(str).str.zfill(4)

@@ -2,6 +2,8 @@
     
     NASA FIRMS API - 화재 모니터링 (12시간 단위 업데이트)
 
++) Ambee wildfire API : 유료, 1시간 단위 화재 업데이트
+
 ---
 
 # NASA FIRMS API

@@ -1,10 +1,10 @@
 import os
 import folium
 from csv_reader import load_grid, load_fire_grid
-
+from config import MAP_DATA_DIR
 
 def draw_grid():
-    save_path = os.path.join(os.getcwd(), 'map_data/map.html')
+    save_path = os.path.join(MAP_DATA_DIR, "map.html")
 
     grid = load_grid()
     center_lat = sum(d['LAT'] for d in grid) / len(grid)
@@ -22,7 +22,7 @@ def draw_grid():
     m.save(save_path)
 
 def draw_fire_grid():
-    save_path = os.path.join(os.getcwd(), 'map_data/fire_map.html')
+    save_path = os.path.join(MAP_DATA_DIR, "fire_map.html")
 
     grid = load_fire_grid()
     center_lat = sum(d['LAT'] for d in grid) / len(grid)
