@@ -5,7 +5,7 @@ import time
 import argparse
 from config import KMA_ENDPOINTS, WEATHER_DATA_DIR
 
-def get_data(endpoint, out_dir):
+def get_weather_data(endpoint, out_dir):
     if endpoint not in KMA_ENDPOINTS:
         print("Wrong choice")
         return
@@ -33,11 +33,11 @@ def get_data(endpoint, out_dir):
 
     convert_to_csv(temp_path, save_path)
 
-def get_all_data():
+def get_all_weather_data():
     timestamp = time.strftime("%m%d%H%M%S")
     out_dir = os.path.join(WEATHER_DATA_DIR, timestamp)
     for endpoint in KMA_ENDPOINTS:
-        get_data(endpoint, out_dir)
+        get_weather_data(endpoint, out_dir)
 
 def convert_to_csv(infile_path, outfile_path):
     with open(infile_path, "r", encoding="utf-8") as f_in:
@@ -100,4 +100,4 @@ if __name__ == "__main__":
         for key, val in KMA_ENDPOINTS.items():
             print(f"{key}. {val['desc']}")
     elif args.choice:
-        get_data(args.choice, args.out)
+        get_weather_data(args.choice, args.out)
