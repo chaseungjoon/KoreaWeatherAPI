@@ -11,8 +11,8 @@ def get_firms_data():
         csv_data = io.StringIO(response.text)
         df_kor = pd.read_csv(csv_data)
         timestamp = time.strftime("%m%d%H%M%S")
-        save_filename = "fire_data_"+timestamp+".csv"
-        save_path = os.path.join(FIRE_DATA_DIR, save_filename)
+        filename = "fire_data_"+timestamp+".csv"
+        save_path = os.path.join(FIRE_DATA_DIR, filename)
 
         if not df_kor.empty:
             time_str = df_kor['acq_time'].astype(str).str.zfill(4)

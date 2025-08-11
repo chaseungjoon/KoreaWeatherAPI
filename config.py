@@ -1,5 +1,9 @@
 import os
 
+""" tokens """
+KMA_WEATHER_TOKEN = os.getenv("KMA_WEATHER_TOKEN")
+NASA_FIRMS_MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
+
 """ directories """
 ROOT_DIR = os.getcwd()
 FIRE_DATA_DIR = os.path.join(ROOT_DIR, "fire_data")
@@ -10,7 +14,6 @@ WEATHER_DATA_DIR = os.path.join(ROOT_DIR, "weather_data")
 GRID_PATH = os.path.join(MAP_DATA_DIR, "grid.csv")
 
 """ kma api """
-KMA_WEATHER_TOKEN = os.getenv("KMA_WEATHER_TOKEN")
 KMA_AWS_BASE_URL = "https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min"
 KMA_ENDPOINTS = {
         1: {"url": KMA_AWS_BASE_URL + f"?authKey={KMA_WEATHER_TOKEN}", "filename": "AWS", "filetype": "csv", "desc" : "AWS 매분자료"},
@@ -20,5 +23,4 @@ KMA_ENDPOINTS = {
 }
 
 """ nasa firms api """
-NASA_FIRMS_MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
 NASA_FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/country/csv/"+NASA_FIRMS_MAP_KEY+"/MODIS_NRT/KOR/3"
