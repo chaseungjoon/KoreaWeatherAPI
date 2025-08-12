@@ -38,11 +38,9 @@ from config import *
 """
 
 def fetch_recent():
-
     get_all_weather_data()
     get_firms_data()
     draw_fire_grid()
 
 if __name__ == "__main__":
-
     fetch_recent()
