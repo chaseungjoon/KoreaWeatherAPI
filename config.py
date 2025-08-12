@@ -23,4 +23,4 @@ KMA_ENDPOINTS = {
 }
 
 """ nasa firms api """
-NASA_FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/country/csv/"+NASA_FIRMS_MAP_KEY+"/MODIS_NRT/KOR/3"
+NASA_FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/country/csv/"+NASA_FIRMS_MAP_KEY+"/MODIS_NRT/KOR"
