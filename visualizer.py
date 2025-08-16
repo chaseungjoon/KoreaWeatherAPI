@@ -31,6 +31,11 @@ def draw_fire_grid():
     m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
 
     for d in grid:
+        if d['INST']=="MODIS" and d['CONFIDENCE'] <=0:
+            continue
+        elif d['INST']=="VIIRS" and d['CONFIDENCE']=='l':
+            continue
+
         folium.Marker(
             location=[d['LAT'], d['LON']],
             popup=f"{d['DATE']}-{d['TIME']}\nFRP: {d['FRP']} Conf: {d['CONFIDENCE']}",
