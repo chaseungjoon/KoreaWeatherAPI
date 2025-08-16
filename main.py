@@ -2,7 +2,6 @@ from kma_api import get_weather_data, get_all_weather_data
 from nasa_api import get_firms_data
 from csv_reader import load_grid, load_fire_grid
 from visualizer import draw_fire_grid
-from config import *
 
 """
 1. 최신 날씨정보 받아오기 (특정 Endpoint 정보)
