@@ -31,12 +31,19 @@ def load_fire_grid():
     with open(fire_file_path, 'r') as f:
         reader = csv.DictReader(f)
         for row in reader:
+
+            if row['instrument']=="MODIS":
+                conf = float(row['confidence'])
+            else:
+                conf = row['confidence']
+
             result.append({
                 'DATE': row['acq_date'],
                 'TIME': row['acq_time'],
                 'LON': float(row['longitude']),
                 'LAT': float(row['latitude']),
                 'FRP': float(row['frp']),
-                'CONFIDENCE': float(row['confidence'])
+                'CONFIDENCE': conf,
+                'INST': row['instrument']
             })
     return result
