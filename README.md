@@ -16,23 +16,24 @@
 
 ### API Call : 화재 의심 지점을 row로 생성 [fire_data_MMDDHHMMSS.csv]
 
-| Column         | 예시 값 | 설명 |
-|----------------|---------|------|
-| Country        | KOR | 국가 코드 (ISO 3자리) |
-| Latitude       | 37.48554 | 화재 탐지 지점의 위도 (도) |
-| Longitude      | 129.05978 | 화재 탐지 지점의 경도 (도) |
-| Brightness     | 313.81 | 화재 픽셀의 밝기 온도(켈빈) |
-| Brightness_T21 | 1.3 | 21번 밴드 밝기 (Kelvin) — 특정 파장 관측 |
-| Brightness_T31 | 1.13 | 31번 밴드 밝기 (Kelvin) — 특정 파장 관측 |
-| Acq_Date       | 2025-08-08 | 위성 관측 날짜 (UTC) |
-| Acq_Time       | 0950 | 위성 관측 시간 (UTC, HHMM 형식) |
-| Satellite      | Terra | 관측 위성 이름 |
-| Instrument     | MODIS | 관측 센서 이름 |
-| Confidence     | 65 | 화재 탐지 신뢰도 (%) |
-| Version        | 6.1NRT | 알고리즘 버전 (NRT = Near Real Time) |
-| Bright_Temp    | 298.9 | 밝기 온도(켈빈) |
-| FRP            | 10.3 | Fire Radiative Power (메가와트, 화재 강도) |
-| Day/Night      | D | 낮/밤 여부 (D=Day, N=Night) |
+| Column                        | 예시 값       | 설명                                  |
+|-------------------------------|------------|-------------------------------------|
+| latitude                      | 37.48554   | 화재 탐지 지점의 위도 (도)                    |
+| longitude                     | 129.05978  | 화재 탐지 지점의 경도 (도)                    |
+| frp                           | 10.3       | Fire Radiative Power (메가와트, 화재 강도)  |
+| daynight                      | D          | 낮/밤 여부 (D=Day, N=Night)             |
+| acq_Date                      | 2025-08-08 | 위성 관측 날짜 (UTC)                      |
+| acq_Time                      | 0950       | 위성 관측 시간 (UTC, HHMM 형식)             |
+| satellite                     | Terra      | 관측 위성 이름                            |
+| instrument                    | MODIS      | 관측 센서 이름                            |
+| version                       | 6.1NRT     | 알고리즘 버전 (NRT = Near Real Time)      |
+| **(VIIRS_NOAA20_NRT)** confidence | n          | 화재 탐지 신뢰도 (l=low, n=normal, h=high) |
+| **(VIIRS_NOAA20_NRT)** bright_ti4 | 331.48     | 4번 밴드 밝기 (Kelvin) - 특정 파장 관측        |
+| **(VIIRS_NOAA20_NRT)** bright_ti5 | 302.14     | 5번 밴드 밝기 (Kelvin) - 특정 파장 관측        |
+| **(MODIS_NRT)** confidence        | 65         | 화재 탐지 신뢰도 (%)                       |
+| **(MODIS_NRT)** brightness        | 313.81     | 화재 픽셀의 밝기 온도(켈빈)                    |
+| **(MODIS_NRT)** bright_t31        | 301.66     | 31번 밴드 밝기 (Kelvin) — 특정 파장 관측       |
+
 
 
 ---
