@@ -1,7 +1,7 @@
 from kma_api import get_weather_data, get_all_weather_data
 from nasa_api import get_firms_data
 from csv_reader import load_grid, load_fire_grid
-from visualizer import draw_grid, draw_fire_grid
+from visualizer import draw_fire_grid
 from config import *
 
 """
@@ -53,4 +53,12 @@ def fetch_recent():
     draw_fire_grid()
 
 if __name__ == "__main__":
+
+    """ Fetch most recent data"""
     fetch_recent()
+
+    """ Load weather grid"""
+    grid = load_grid()
+
+    """ Load fire position grid"""
+    fire_grid = load_fire_grid()
