@@ -25,6 +25,8 @@ def get_firms_data(lookback_days=3):
             df_kor['acq_time'] = kst_time.dt.strftime('%H%M')
 
             df_kor.to_csv(save_path, index=False)
+        else:
+            print("No data")
     except Exception as e:
         print(e)
         return
