@@ -2,9 +2,51 @@
     
     NASA FIRMS API - 화재 모니터링 (매일 01시~03시 한번, 13시~14시 한번 업데이트)
 
+    천리안2호 API - 화재 모니터링 (매일 2분마다 업데이트, 10시간 딜레이)
+
+[천리안2호 메타데이터](https://datasvc.nmsc.kma.go.kr/datasvc/html/base/cmm/selectPage.do?page=static.software)
+
 + **Ambee wildfire API : 유료, 1시간 단위 화재 업데이트**
 
 ---
+
+# 천리안2호 인공위성 API
+
+## 인공위성 화재 모니터링 - 기상청 자체 알고리즘
+
+- True Positive 87.17%, False Positive 15.20%
+
+> 생산주기 : 약 2분마다 화재 의심점 업데이트
+> 
+> 데이터 딜레이 약 10시간 
+>
+> 위치 : 한반도 전역 및 extended area
+
+### API Call : 화재 의심 지점을 row로 생성 [satellite_data/csv/YYYYMMDDHHMM.csv]
+
+| Column | 예시 값      | 설명                              |
+|--------|-----------|---------------------------------|
+| lat    | 37.48554  | 화재 탐지 지점의 위도 (도)                |
+| lon    | 129.05978 | 화재 탐지 지점의 경도 (도)                |
+| FF     | 0,1,2     | 화재 탐지 플래그 (0 : 화재 없음, 1: 화재 있음) |
+| DQF_FF | 10.3      | 데이터의 신뢰성 (0~13)                 |
+
+| DQF_FF | 의미                                                       | 
+|--------|----------------------------------------------------------|
+| 0      | Invalid, outside observation range (SZA above 70 degree) |
+| 1      | Invalid, masked area or missing input data               |
+| 2      | Land                                                     |
+| 3      | Water                                                    |
+| 4      | Cloud                                                    |
+| 5      | Rejection by cloud test                                  |
+| 6      | Rejection by bare soil, urban and water test             |
+| 7      | Potential Fire                                           |
+| 8      | Fire                                                     |
+| 9      | Absolute Fire                                            |
+| 10     | Industrial Heat Detection                                |
+| 12     | Stability test                                           |
+| 13     | Probably Cloud                                           |
+
 
 # NASA FIRMS API
 
