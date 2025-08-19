@@ -44,7 +44,7 @@ def draw_GK2A_fire_grid():
     m.save(save_path)
 
 def draw_nasa_fire_grid():
-    save_path = os.path.join(MAP_DATA_DIR, "fire_map.html")
+    save_path = os.path.join(MAP_DATA_DIR, "fire_map_firms.html")
 
     grid = load_nasa_fire_grid()
     if not grid:
