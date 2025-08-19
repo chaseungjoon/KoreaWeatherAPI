@@ -1,3 +1,7 @@
+numpy
 requests
 pandas
 folium
+xarray
+netcdf4
+pyproj
