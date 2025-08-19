@@ -1,12 +1,8 @@
 import requests
-from config import KFS_REALTIME_URL
-
-def get_kfs_fire_data():
-    response = requests.get(KFS_REALTIME_URL)
-    data = response.json()
-
-    return data
-
+from config import KFS_REALTIME_URL, KFS_DATA_DIR
+import csv
+import os
+from datetime import datetime
 
 """ 예상 응답
 
@@ -29,3 +25,39 @@ def get_kfs_fire_data():
 }
 
 """
+
+def get_kfs_fire_data():
+    try:
+        response = requests.get(KFS_REALTIME_URL)
+        data = response.json()
+    except Exception as e:
+        print(e)
+        return
+
+
+
+
+    """ TEMPORARY CHECKING METHOD!! DELETE AFTER VALIDATION OF API"""
+    print(data)
+
+
+
+
+
+    data_list = data.get("fireShowInfoList")
+
+    if not data_list:
+        print("No fire data found")
+        return
+
+    timestamp = datetime.now().strftime("%m%d%H%M")
+    filepath = os.path.join(KFS_DATA_DIR, f"{timestamp}.csv")
+
+    try:
+        with open(filepath, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=data_list[0].keys())
+            writer.writeheader()
+            writer.writerows(data_list)
+    except Exception as e:
+        print(e)
+

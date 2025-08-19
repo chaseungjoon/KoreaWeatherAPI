@@ -67,20 +67,17 @@ def fetch_recent():
     get_GK2A_fire_data()
     draw_GK2A_fire_grid()
 
+    get_kfs_fire_data()
+
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
     fetch_recent()
 
-    """ [TEMPORARY] KFS data check"""
-    print(get_kfs_fire_data())
+    get_kfs_fire_data()
 
-    """ Load weather grid"""
-    #grid = load_grid()
-
-    """ Load nasa fire position grid"""
-    #nasa_fire_grid = load_nasa_fire_grid()
-
-    """ Load GK2A fire position grid"""
-    #GK2A_fire_grid = load_GK2A_fire_grid()
+    """ Load grids """
+    grid = load_grid()
+    nasa_fire_grid = load_nasa_fire_grid()
+    GK2A_fire_grid = load_GK2A_fire_grid()
 

@@ -11,6 +11,7 @@ FIRE_DATA_DIR = os.path.join(ROOT_DIR, "firms_data")
 MAP_DATA_DIR = os.path.join(ROOT_DIR, "map_data")
 WEATHER_DATA_DIR = os.path.join(ROOT_DIR, "weather_data")
 SATELLITE_DATA_DIR = os.path.join(ROOT_DIR, "GK2A_data")
+KFS_DATA_DIR = os.path.join(ROOT_DIR, "kfs_data")
 
 """ files """
 GRID_PATH = os.path.join(MAP_DATA_DIR, "grid.csv")
