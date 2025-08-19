@@ -4,11 +4,37 @@
 
     천리안2호 API - 화재 모니터링 (매일 2분마다 업데이트, 10시간 딜레이)
 
+    ***산림청 API - 실시간 산불 정보 (실시간)***
+
 [천리안2호 메타데이터](https://datasvc.nmsc.kma.go.kr/datasvc/html/base/cmm/selectPage.do?page=static.software)
 
 + **Ambee wildfire API : 유료, 1시간 단위 화재 업데이트**
 
 ---
+
+# KFS(산림청) API Endpoint
+
+## 실시간 산불 정보
+
+> 생산주기 : 모름 하지만 실시간 예상
+> 
+> [웹사이트](http://fd.forest.go.kr/ffas/gis/main.do)
+
+### API Call : 화재 의심 지점의 정보(아래 필드)를 리턴
+
+| 필드 | 의미 |
+|------|------|
+| `frfrInfoId` | 산불 고유 ID |
+| `frfrLctnXcrd` | 산불 발생 경도 (Longitude) |
+| `frfrLctnYcrd` | 산불 발생 위도 (Latitude) |
+| `frfrSttmnAddr` | 산불 발생 주소 |
+| `frfrFrngDtm` | 산불 발생 일시 (`YYYY-MM-DD HH:mm:ss`) |
+| `potfrCmpleDtm` | 산불 진화 완료 일시 (`YYYY-MM-DD HH:mm:ss`), 완료 전에는 `null` |
+| `frfrPrgrsStcd` | 산불 진행 상태 코드<br>00: 초기 대응<br>01: 산불 1단계<br>02: 산불 2단계<br>03: 산불 3단계<br>05: 삭제/해제 |
+| `frfrPrgrsStcdNm` | 산불 진행 상태명 (예: "진화중", "진화완료", "삭제") |
+| `frfrStepIssuCd` | 산불 대응 단계 코드<br>00~03: 단계별 대응<br>99: 동원령 해제 |
+| `frfrStepIssuNm` | 산불 대응 단계명 (예: "초기진화단계", "산불1단계") |
+| `frfrPotfrRt` | 산불 진화율 (%) |
 
 # 천리안2호 인공위성 API
 
