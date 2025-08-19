@@ -1,14 +1,15 @@
 import csv
 import os
-from config import GRID_PATH, FIRE_DATA_DIR
+from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR
 
-def get_recent_fire():
-    csv_files = [f for f in os.listdir(FIRE_DATA_DIR) if f.startswith("fire_data_") and f.endswith(".csv")]
+
+def get_recent_file(dir):
+    csv_files = [f for f in os.listdir(dir) if f.endswith(".csv")]
     if not csv_files:
         return None
 
     latest_file = max(csv_files)
-    return os.path.join(FIRE_DATA_DIR, latest_file)
+    return os.path.join(dir, latest_file)
 
 def load_grid():
     result = []
@@ -23,8 +24,38 @@ def load_grid():
             })
     return result
 
-def load_fire_grid():
-    fire_file_path = get_recent_fire()
+def load_GK2A_fire_grid():
+    satellite_fire_path = get_recent_file(os.path.join(SATELLITE_DATA_DIR, "csv"))
+    if not satellite_fire_path:
+        return []
+
+    result = []
+    with open(satellite_fire_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            lat = float(row['lat'])
+            lon = float(row['lon'])
+            FF = float(row['FF'])
+            DQF_FF = row['DQF_FF']
+
+            if not (33 <= lat <= 38 and 126 <= lon <= 130):
+                continue
+            if FF != 1.0:
+                continue
+            if DQF_FF not in ["7.0", "8.0", "9.0"]:
+                continue
+
+            result.append({
+                'LAT': lat,
+                'LON': lon,
+                'FF': FF,
+                'DQF_FF': DQF_FF
+            })
+
+        return result
+
+def load_nasa_fire_grid():
+    fire_file_path = get_recent_file(FIRE_DATA_DIR)
     if not fire_file_path:
         return []
     result = []
