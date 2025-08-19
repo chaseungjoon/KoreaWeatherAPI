@@ -1,9 +1,11 @@
 import requests
 from config import KFS_REALTIME_URL
 
-resp = requests.get(KFS_REALTIME_URL)
-data = resp.json()
-print(data)
+def get_kfs_fire_data():
+    response = requests.get(KFS_REALTIME_URL)
+    data = response.json()
+
+    return data
 
 
 """ 예상 응답

@@ -1,5 +1,6 @@
 from kma_api import get_weather_data, get_all_weather_data, get_GK2A_fire_data
 from nasa_api import get_firms_data
+from kfs_api import get_kfs_fire_data
 from csv_reader import load_grid, load_nasa_fire_grid, load_GK2A_fire_grid
 from visualizer import draw_nasa_fire_grid, draw_GK2A_fire_grid
 
@@ -34,6 +35,10 @@ from visualizer import draw_nasa_fire_grid, draw_GK2A_fire_grid
     * 10시간 딜레이
     
         get_GK2A_fire_data()   # 천리안2호 위성 화재 데이터 .csv로 저장
+        
+    * 실시간 업데이트
+    
+        get_kfs_fire_data()   # 산림청 실시간 산불현황 API
     
 4. 기상관측소 위치 정보, 화재 발생 위치 정보 로드하기
 
@@ -67,14 +72,15 @@ if __name__ == "__main__":
     """ Fetch most recent data"""
     fetch_recent()
 
-
+    """ [TEMPORARY] KFS data check"""
+    print(get_kfs_fire_data())
 
     """ Load weather grid"""
-    grid = load_grid()
+    #grid = load_grid()
 
     """ Load nasa fire position grid"""
-    nasa_fire_grid = load_nasa_fire_grid()
+    #nasa_fire_grid = load_nasa_fire_grid()
 
     """ Load GK2A fire position grid"""
-    GK2A_fire_grid = load_GK2A_fire_grid()
+    #GK2A_fire_grid = load_GK2A_fire_grid()
 
