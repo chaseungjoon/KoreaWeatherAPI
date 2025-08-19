@@ -74,8 +74,6 @@ if __name__ == "__main__":
     """ Fetch most recent data"""
     fetch_recent()
 
-    get_kfs_fire_data()
-
     """ Load grids """
     grid = load_grid()
     nasa_fire_grid = load_nasa_fire_grid()
