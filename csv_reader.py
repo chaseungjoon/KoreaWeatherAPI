@@ -1,6 +1,6 @@
 import csv
 import os
-from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR
+from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR
 
 
 def get_recent_file(dir):
@@ -78,3 +78,25 @@ def load_nasa_fire_grid():
                 'INST': row['instrument']
             })
     return result
+
+def load_kfs_fire_grid():
+    fire_file_path = get_recent_file(KFS_DATA_DIR)
+    if not fire_file_path:
+        return []
+
+    result = []
+    with open(fire_file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            result.append({
+                'DATE_START': row['frfrFrngDtm'],
+                'DATE_END': row['potfrCmpleDtm'],
+                'LAT': float(row['frfrLctnYcrd']),
+                'LON': float(row['frfrLctnXcrd']),
+                'PROGRESS': int(row['frfrPrgrsStcd']),
+                'RESPONSE_LEVEL': int(row['frfrStepIssuCd']),
+                'CONTROL': int(row['frfrPotfrRt'])
+            })
+    return result
+                             
+
