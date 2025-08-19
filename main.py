@@ -25,7 +25,7 @@ from visualizer import draw_nasa_fire_grid, draw_GK2A_fire_grid
     
     * 12시간 단위 업데이트
     * Optional parameter : 지난 n일간의 화재 데이터 (default=3)
-    * fire_data 폴더에 .csv로 저장
+    * firms_data 폴더에 .csv로 저장
 
         get_firms_data()    # 지난 3일간의 화재 데이터
         get_firms_data(5)   # 지난 5일간의 화재 데이터

@@ -7,10 +7,10 @@ NASA_FIRMS_MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
 """ directories """
 DOWNLOAD_DEFAULT_DIR = "/Users/chaseungjun/Downloads"
 ROOT_DIR = os.getcwd()
-FIRE_DATA_DIR = os.path.join(ROOT_DIR, "fire_data")
+FIRE_DATA_DIR = os.path.join(ROOT_DIR, "firms_data")
 MAP_DATA_DIR = os.path.join(ROOT_DIR, "map_data")
 WEATHER_DATA_DIR = os.path.join(ROOT_DIR, "weather_data")
-SATELLITE_DATA_DIR = os.path.join(ROOT_DIR, "satellite_data")
+SATELLITE_DATA_DIR = os.path.join(ROOT_DIR, "GK2A_data")
 
 """ files """
 GRID_PATH = os.path.join(MAP_DATA_DIR, "grid.csv")
