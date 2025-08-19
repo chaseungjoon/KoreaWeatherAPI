@@ -7,6 +7,8 @@ def draw_grid():
     save_path = os.path.join(MAP_DATA_DIR, "map.html")
 
     grid = load_grid()
+    if not grid:
+        return
     center_lat = sum(d['LAT'] for d in grid) / len(grid)
     center_lon = sum(d['LON'] for d in grid) / len(grid)
 
@@ -25,6 +27,8 @@ def draw_GK2A_fire_grid():
     save_path = os.path.join(MAP_DATA_DIR, "fire_map_GK2A.html")
 
     grid = load_GK2A_fire_grid()
+    if not grid:
+        return
     center_lat = sum(d['LAT'] for d in grid) / len(grid)
     center_lon = sum(d['LON'] for d in grid) / len(grid)
 
@@ -43,6 +47,8 @@ def draw_nasa_fire_grid():
     save_path = os.path.join(MAP_DATA_DIR, "fire_map.html")
 
     grid = load_nasa_fire_grid()
+    if not grid:
+        return
     center_lat = sum(d['LAT'] for d in grid) / len(grid)
     center_lon = sum(d['LON'] for d in grid) / len(grid)
 
