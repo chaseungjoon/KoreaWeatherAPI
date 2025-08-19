@@ -104,7 +104,7 @@ def nc_to_csv(nc_file: str):
     })
     df.to_csv(csv_file, index=False)
 
-def get_satellite_image():
+def get_GK2A_fire_data():
     """ 데이터 딜레이 약 10시간, 짝수분만 가능"""
     cur_timestamp = time.strftime("%Y%m%d%H%M")
     dt = datetime.strptime(cur_timestamp, "%Y%m%d%H%M")
