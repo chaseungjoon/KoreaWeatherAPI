@@ -18,7 +18,7 @@
 
 ---
 
-## 1. KFS (산림청) API (kfs_data/*.csv)
+## 1. KFS (산림청) API `(kfs_data/*.csv)`
 
 ### 실시간 산불 정보
 - **생산주기**: 미공개 (실시간 반영으로 추정)  
@@ -42,7 +42,7 @@
 
 ---
 
-## 2. 천리안2호 인공위성 API (GK2A_data/csv/*.csv)
+## 2. 천리안2호 인공위성 API `(GK2A_data/csv/*.csv)`
 
 ### 개요
 - **제공 데이터**: 화재 의심 지점, .nc파일
@@ -79,7 +79,7 @@
 
 ---
 
-## 3. NASA FIRMS API (firms_data/*.csv)
+## 3. NASA FIRMS API `(firms_data/*.csv)`
 
 ### 개요
 - **제공 데이터**: 위성 기반 화재 모니터링
@@ -116,7 +116,7 @@
 
 ---
 
-### 4.1. AWS 매분자료 (weather_data/(timestamp)/AWS_*.csv)
+### 4.1. AWS 매분자료 `(weather_data/(timestamp)/AWS_*.csv)`
 
 #### 제공 항목
 - 풍향/풍속 (1분 평균, 10분 평균, 최대 순간)
@@ -147,7 +147,7 @@
 
 ---
 
-### 4.2. AWS 운고·운량 (weather_data/(timestamp)/AWS_cloud_*.csv)
+### 4.2. AWS 운고·운량 `(weather_data/(timestamp)/AWS_cloud_*.csv)`
 
 #### 제공 항목
 - 하층/중층/상층 운고
@@ -162,7 +162,7 @@
 
 ---
 
-### 4.3. AWS 초상온도 (weather_data/(timestamp)/AWS_temp_*.csv)
+### 4.3. AWS 초상온도 `(weather_data/(timestamp)/AWS_temp_*.csv)`
 
 #### 제공 항목
 - 기온, 이슬점온도, 초상온도, 지면온도
@@ -194,7 +194,7 @@
 
 ---
 
-### 4.4. AWS 시정 (가시거리) (weather_data/(timestamp)/AWS_vis_*.csv)
+### 4.4. AWS 시정 (가시거리) `(weather_data/(timestamp)/AWS_vis_*.csv)`
 
 #### 제공 항목
 - 가시거리 (1분 / 10분 평균)
