@@ -35,6 +35,7 @@ def get_kfs_fire_data():
         return
 
     """ DUMMY DATA! DELETE AFTER VALIDATION OF API"""
+    print(data)
     data = {
         "fireShowInfoList": [
           {
