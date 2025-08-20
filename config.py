@@ -3,6 +3,7 @@ import os
 """ tokens """
 KMA_WEATHER_TOKEN = os.getenv("KMA_WEATHER_TOKEN")
 NASA_FIRMS_MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
+SAFEMAP_API_KEY = os.getenv("SAFEMAP_API_KEY")
 
 """ directories """
 DOWNLOAD_DEFAULT_DIR = "/Users/chaseungjun/Downloads"
@@ -31,7 +32,6 @@ KMA_SATELLITE_BASE_URL = "https://apihub.kma.go.kr/api/typ05/api/GK2A/LE2/FF/KO/
 KFS_REALTIME_URL = "https://fd.forest.go.kr/ffas/pubConn/selectPublicFireShowList.do"
 
 """safemap api"""
-SAFEMAP_API_KEY = os.getenv("SAFEMAP_API_KEY")
 SAFEMAP_FLOOD_LAYER_URL = "https://www.safemap.go.kr/openApiService/wms/getLayerData.do"
 
 """ nasa firms api """
