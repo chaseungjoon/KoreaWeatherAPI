@@ -75,8 +75,9 @@ def fetch_recent():
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
-    fetch_recent()
-
+    #fetch_recent()
+    get_kfs_fire_data()
+    draw_kfs_fire_grid()
     """ Load grids """
     grid = load_grid()
     nasa_fire_grid = load_nasa_fire_grid()

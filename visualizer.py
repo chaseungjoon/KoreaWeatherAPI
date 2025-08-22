@@ -80,10 +80,21 @@ def draw_kfs_fire_grid():
     m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
 
     for d in grid:
-        folium.Marker(
-            location=[d['LAT'], d['LON']],
-            popup=f"발생일시 : {d['DATE']}\n주소 : {d['ADDRESS']}, 상태 : {d['PROGRESS']}\n단계 : {d['RESPONSE_LEVEL']}",
-            icon=folium.Icon(color="red", icon="info-sign")
-        ).add_to(m)
+        if d['PROGRESS']==3:
+            icon_color = "green"
+        else:
+            icon_color = "red"
+        if d['CONTAINMENT_RATE'] in d:
+            folium.Marker(
+                location=[d['LAT'], d['LON']],
+                popup=f"발생일시 : {d['DATE']}\n주소 : {d['ADDRESS']}, 상태 : {d['PROGRESS']}\n진화율 : {d['CONTAINMENT_RATE']}\n단계 : {d['RESPONSE_LEVEL']}",
+                icon=folium.Icon(color=icon_color, icon="info-sign")
+            ).add_to(m)
+        else :
+            folium.Marker(
+                location=[d['LAT'], d['LON']],
+                popup=f"발생일시 : {d['DATE']}\n주소 : {d['ADDRESS']}, 상태 : {d['PROGRESS']}\n단계 : {d['RESPONSE_LEVEL']}",
+                icon=folium.Icon(color=icon_color, icon="info-sign")
+            ).add_to(m)
 
     m.save(save_path)
