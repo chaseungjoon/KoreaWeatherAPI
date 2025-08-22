@@ -5,3 +5,4 @@ folium
 xarray
 netcdf4
 pyproj
+Pillow

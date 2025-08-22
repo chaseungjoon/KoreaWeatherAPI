@@ -9,7 +9,7 @@ def get_flood_layer_map():
         "service": "WMS",
         "version": "1.1.1",
         "request": "GetMap",
-        "apikey": {SAFEMAP_API_KEY},
+        "apikey": SAFEMAP_API_KEY,
         "layers": "A2SM_FLUDMARKS",
         "styles": "A2SM_FludMarks",
         "format": "image/png",
