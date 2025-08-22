@@ -89,13 +89,13 @@ def load_kfs_fire_grid():
         reader = csv.DictReader(f)
         for row in reader:
             result.append({
-                'DATE_START': row['frfrFrngDtm'],
-                'DATE_END': row['potfrCmpleDtm'],
+                'ID': row['frfrInfoId'],
+                'DATE': row['frfrFrngDtm'],
                 'LAT': float(row['frfrLctnYcrd']),
                 'LON': float(row['frfrLctnXcrd']),
+                'ADDRESS': row['frfrSttmnAddr'],
                 'PROGRESS': int(row['frfrPrgrsStcd']),
                 'RESPONSE_LEVEL': int(row['frfrStepIssuCd']),
-                'CONTROL': int(row['frfrPotfrRt'])
             })
     return result
                              
