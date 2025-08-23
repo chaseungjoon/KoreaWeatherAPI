@@ -13,7 +13,7 @@ MAP_DATA_DIR = os.path.join(ROOT_DIR, "map_data")
 WEATHER_DATA_DIR = os.path.join(ROOT_DIR, "weather_data")
 SATELLITE_DATA_DIR = os.path.join(ROOT_DIR, "GK2A_data")
 KFS_DATA_DIR = os.path.join(ROOT_DIR, "kfs_data")
-FLOOD_DATA_DIR = os.path.join(ROOT_DIR, "flood_data")
+SAFEMAP_DATA_DIR = os.path.join(ROOT_DIR, "safemap_data")
 
 """ files """
 GRID_PATH = os.path.join(MAP_DATA_DIR, "grid.csv")
@@ -30,6 +30,9 @@ KMA_SATELLITE_BASE_URL = "https://apihub.kma.go.kr/api/typ05/api/GK2A/LE2/FF/KO/
 
 """kfs api"""
 KFS_REALTIME_URL = "https://fd.forest.go.kr/ffas/pubConn/selectPublicFireShowList.do"
+
+""" safemap api"""
+SAFEMAP_BASE_URL = "http://www.safemap.go.kr/openApiService/wms/getLayerData.do"
 
 """ nasa firms api """
 NASA_FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/"+NASA_FIRMS_MAP_KEY+"/VIIRS_NOAA20_NRT/124.5,33.0,131.0,39.5"

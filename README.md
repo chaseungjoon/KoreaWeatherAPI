@@ -1,11 +1,11 @@
 # 데이터 소스
 
-## 기상 관측
+> ## 기상 관측
 ### **기상청 OpenAPI**
   - **제공 데이터**: 기온, 기압, 운고, 운량, 가시거리  
   - **업데이트 주기**: 1분 단위 (실제 반영 약 5~7분 지연)
 
-## 화재 모니터링
+> ## 화재 모니터링
 
 ### **산림청 API**  ✅
   - **업데이트 주기**: 실시간, 화재 신고 시 즉각 업데이트
@@ -13,10 +13,21 @@
 ### **NASA FIRMS API**  
   - **업데이트 주기**: 일 2회 (01–03시, 13–14시)  
 
-### **천리안2호 API**  
+### **천리안2호 API**   
   - **업데이트 주기**: 2분 단위 (실제 반영 약 10시간 지연)  
   - **참고 문서**: [메타데이터 링크](https://datasvc.nmsc.kma.go.kr/datasvc/html/base/cmm/selectPage.do?page=static.software)
 
+> ## 홍수 모니터링
+
+### Google Flood Forcasting API (승인 대기중)
+  - **업데이트 주기**: Several times a day (약 4~6시간 간격)
+  - **제공 데이터**: 최근 홍수 status
+  - **참고 문서**: [Google Flood Forcasting](https://developers.google.com/flood-forecasting/rest?hl=ko)
+
+### 침수흔적도 OpenAPI
+  - **갱신주기**: 매년 1회 (연말)
+  - **제공 데이터**: 침수흔적도 사진파일(png) (좌표 : 124~132E, 33~39N)
+  - **참고 문서**: [침수흔적도 OpenAPI](https://safemap.go.kr/opna/data/dataView.do)
 
 ---
 
