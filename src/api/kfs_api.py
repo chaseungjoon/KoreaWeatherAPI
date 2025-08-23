@@ -4,34 +4,6 @@ import csv
 import os
 from datetime import datetime
 
-""" 실제 응답
-
-{
-  "fireShowInfoList": [
-    {
-      "frfrLctnXcrd": "127.67243000000057",
-      "frfrPrgrsStcd": "02",
-      "frfrOccrrTpcd": "05",
-      "frfrStepIssuCd": "00",
-      "frfrPotfrRt": 70,
-      "frfrSttmnDt": "20250822",
-      "frfrSttmnHms": "144122",
-      "frfrInfoId": "398504",
-      "frfrOccrrStcd": "31",
-      "frfrLctnYcrd": "37.08104000024055",
-      "frfrSttmnLctnXcrd": "127.67243000000029",
-      "frfrSttmnLctnYcrd": "37.08104000012027",
-      "frfrSttmnAddr": "충청북도 음성군 감곡면 영산리",
-      "frfrPrgrsStcdNm": "진화중",
-      "frfrSttmnAddrDe": "충청북도 음성군 감곡면 영산리 산55-3임",
-      "frfrFrngDtm": "2025-08-22 14:41:22",
-      "frfrStepIssuNm": "초기 대응",
-      "lgdngCd": "4377037026"
-    }
-  ]
-}
-"""
-
 def get_kfs_fire_data():
     try:
         response = requests.get(KFS_REALTIME_URL)
