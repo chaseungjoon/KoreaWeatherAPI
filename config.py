@@ -31,8 +31,5 @@ KMA_SATELLITE_BASE_URL = "https://apihub.kma.go.kr/api/typ05/api/GK2A/LE2/FF/KO/
 """kfs api"""
 KFS_REALTIME_URL = "https://fd.forest.go.kr/ffas/pubConn/selectPublicFireShowList.do"
 
-"""safemap api"""
-SAFEMAP_FLOOD_LAYER_URL = "https://www.safemap.go.kr/openApiService/wms/getLayerData.do"
-
 """ nasa firms api """
 NASA_FIRMS_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/"+NASA_FIRMS_MAP_KEY+"/VIIRS_NOAA20_NRT/124.5,33.0,131.0,39.5"
