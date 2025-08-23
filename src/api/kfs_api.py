@@ -1,5 +1,5 @@
 import requests
-from config import KFS_REALTIME_URL, KFS_DATA_DIR
+from src.config import KFS_REALTIME_URL, KFS_DATA_DIR
 import csv
 import os
 from datetime import datetime
@@ -61,6 +61,13 @@ def get_kfs_fire_data():
     except (IOError, IndexError) as e:
         print(e)
 
-response = requests.get(KFS_REALTIME_URL)
-data = response.json()
-print(data)
+
+
+""" MONITORING API CALL """
+def test_kfs_api():
+    response = requests.get(KFS_REALTIME_URL)
+    data = response.json()
+    print(data)
+
+if __name__ == "__main__":
+    test_kfs_api()

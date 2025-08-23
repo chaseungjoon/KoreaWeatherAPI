@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import time
 import requests
-from config import NASA_FIRMS_URL, FIRE_DATA_DIR
+from src.config import NASA_FIRMS_URL, FIRE_DATA_DIR
 
 def get_firms_data(lookback_days=3):
     url = NASA_FIRMS_URL+"/"+str(lookback_days)

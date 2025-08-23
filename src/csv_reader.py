@@ -3,13 +3,13 @@ import os
 from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR
 
 
-def get_recent_file(dir):
-    csv_files = [f for f in os.listdir(dir) if f.endswith(".csv")]
+def get_recent_file(path):
+    csv_files = [f for f in os.listdir(path) if f.endswith(".csv")]
     if not csv_files:
         return None
 
     latest_file = max(csv_files)
-    return os.path.join(dir, latest_file)
+    return os.path.join(path, latest_file)
 
 def load_grid():
     result = []
@@ -54,7 +54,7 @@ def load_GK2A_fire_grid():
 
         return result
 
-def load_nasa_fire_grid():
+def load_firms_fire_grid():
     fire_file_path = get_recent_file(FIRE_DATA_DIR)
     if not fire_file_path:
         return []

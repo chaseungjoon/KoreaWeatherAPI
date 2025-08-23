@@ -7,10 +7,10 @@ SAFEMAP_API_KEY = os.getenv("SAFEMAP_API_KEY")
 
 """ directories """
 DOWNLOAD_DEFAULT_DIR = "/Users/chaseungjun/Downloads"
-ROOT_DIR = os.getcwd()
+ROOT_DIR = "/Users/chaseungjun/PycharmProjects/WeatherAPI-test"
 FIRE_DATA_DIR = os.path.join(ROOT_DIR, "firms_data")
 MAP_DATA_DIR = os.path.join(ROOT_DIR, "map_data")
-WEATHER_DATA_DIR = os.path.join(ROOT_DIR, "weather_data")
+WEATHER_DATA_DIR = os.path.join(ROOT_DIR, "kma_data")
 SATELLITE_DATA_DIR = os.path.join(ROOT_DIR, "GK2A_data")
 KFS_DATA_DIR = os.path.join(ROOT_DIR, "kfs_data")
 SAFEMAP_DATA_DIR = os.path.join(ROOT_DIR, "safemap_data")

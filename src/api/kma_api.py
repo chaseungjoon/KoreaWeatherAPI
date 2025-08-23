@@ -1,13 +1,13 @@
 import csv
 import requests
 import time
-import argparse
+import os
 import pandas as pd
 import numpy as np
 import netCDF4 as nc
 from pyproj import Proj
 from datetime import datetime, timedelta
-from config import *
+from src.config import KMA_ENDPOINTS, WEATHER_DATA_DIR, SATELLITE_DATA_DIR, KMA_WEATHER_TOKEN, KMA_SATELLITE_BASE_URL
 
 np.seterr(invalid="ignore", divide="ignore")
 
@@ -43,6 +43,7 @@ def get_weather_data(endpoint, out_dir):
 def get_all_weather_data():
     timestamp = time.strftime("%m%d%H%M%S")
     out_dir = os.path.join(WEATHER_DATA_DIR, timestamp)
+    os.makedirs(out_dir, exist_ok=True)
     for endpoint in KMA_ENDPOINTS:
         get_weather_data(endpoint, out_dir)
 
@@ -55,16 +56,16 @@ def nc_to_csv(nc_file: str):
     
     proj_var = ds.variables["gk2a_imager_projection"]
     
-    lat_1 = proj_var.getncattr("standard_parallel1")  # 30.0
-    lat_2 = proj_var.getncattr("standard_parallel2")  # 60.0
-    lat_0 = proj_var.getncattr("origin_latitude")     # 38.0
-    lon_0 = proj_var.getncattr("central_meridian")    # 126.0
-    false_easting = proj_var.getncattr("false_easting")   # 0.0
-    false_northing = proj_var.getncattr("false_northing") # 0.0
+    lat_1 = proj_var.getncattr("standard_parallel1")
+    lat_2 = proj_var.getncattr("standard_parallel2")
+    lat_0 = proj_var.getncattr("origin_latitude")
+    lon_0 = proj_var.getncattr("central_meridian")
+    false_easting = proj_var.getncattr("false_easting")
+    false_northing = proj_var.getncattr("false_northing")
     
-    pixel_size = proj_var.getncattr("pixel_size")     # 2000.0 m
-    upper_left_easting = proj_var.getncattr("upper_left_easting")   # -899000.0
-    upper_left_northing = proj_var.getncattr("upper_left_northing") # 899000.0
+    pixel_size = proj_var.getncattr("pixel_size")
+    upper_left_easting = proj_var.getncattr("upper_left_easting")
+    upper_left_northing = proj_var.getncattr("upper_left_northing")
     
     ny, nx = FF.shape
     
@@ -179,17 +180,3 @@ def convert_to_csv(infile_path, outfile_path):
             writer.writerow(row)
 
     os.remove(infile_path)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--choice', '-c', type=int, choices=KMA_ENDPOINTS.keys())
-    parser.add_argument('--list', '-l', action='store_true')
-    parser.add_argument('--out', '-o', default=WEATHER_DATA_DIR)
-    args = parser.parse_args()
-
-    if args.list:
-        print("Available endpoints:")
-        for key, val in KMA_ENDPOINTS.items():
-            print(f"{key}. {val['desc']}")
-    elif args.choice:
-        get_weather_data(args.choice, args.out)

@@ -2,9 +2,9 @@ import requests
 import os
 from PIL import Image
 from io import BytesIO
-from config import SAFEMAP_BASE_URL, SAFEMAP_API_KEY, SAFEMAP_DATA_DIR
+from src.config import SAFEMAP_BASE_URL, SAFEMAP_API_KEY, SAFEMAP_DATA_DIR
 
-def fetch_safemap_flood_data(divisions):
+def get_safemap_flood_data(divisions):
     if divisions >10 or divisions <1:
         print("Divisions must be between 1 and 10")
         return
@@ -75,4 +75,4 @@ def fetch_safemap_flood_data(divisions):
             print(f"Deleted tile {tile_num}")
 
 if __name__ == "__main__":
-    fetch_safemap_flood_data(divisions=2)
+    get_safemap_flood_data(divisions=2)
