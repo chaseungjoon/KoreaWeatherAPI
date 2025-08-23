@@ -80,21 +80,21 @@ def draw_kfs_fire_grid():
     m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
 
     for d in grid:
-        if d['PROGRESS']==3:
-            icon_color = "green"
-        else:
-            icon_color = "red"
-        if d['CONTAINMENT_RATE'] in d:
-            folium.Marker(
-                location=[d['LAT'], d['LON']],
-                popup=f"발생일시 : {d['DATE']}\n주소 : {d['ADDRESS']}, 상태 : {d['PROGRESS']}\n진화율 : {d['CONTAINMENT_RATE']}\n단계 : {d['RESPONSE_LEVEL']}",
-                icon=folium.Icon(color=icon_color, icon="info-sign")
-            ).add_to(m)
-        else :
-            folium.Marker(
-                location=[d['LAT'], d['LON']],
-                popup=f"발생일시 : {d['DATE']}\n주소 : {d['ADDRESS']}, 상태 : {d['PROGRESS']}\n단계 : {d['RESPONSE_LEVEL']}",
-                icon=folium.Icon(color=icon_color, icon="info-sign")
-            ).add_to(m)
+        icon_color = "green" if d.get("PROGRESS") == 3 else "red"
+
+        popup_text = (
+            f"발생일시 : {d.get('DATE')}\n"
+            f"주소 : {d.get('ADDRESS')}\n"
+            f"상태 : {d.get('PROGRESS')}\n"
+            f"단계 : {d.get('RESPONSE_LEVEL')}"
+        )
+        if "CONTAINMENT_RATE" in d:
+            popup_text += f"\n진화율 : {d['CONTAINMENT_RATE']}"
+
+        folium.Marker(
+            location=[d.get("LAT"), d.get("LON")],
+            popup=popup_text,
+            icon=folium.Icon(color=icon_color, icon="info-sign")
+        ).add_to(m)
 
     m.save(save_path)

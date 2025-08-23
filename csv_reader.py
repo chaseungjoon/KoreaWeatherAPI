@@ -99,6 +99,9 @@ def load_kfs_fire_grid():
             }
             if 'frfrPotfrRt' in row:
                 item['CONTAINMENT_RATE'] = int(row['frfrPotfrRt'])
+            if 'frfrOccrrTpcd' in row:
+                item['OCCURRENCE_STATUS'] = int(row['frfrOccrrStcd'])
+
             result.append(item)
 
     return result
