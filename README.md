@@ -32,6 +32,7 @@
   - OpenCV 활용 침수흔적도 픽셀 좌표 추출 -> csv 저장 `(safemap_data/csv/*.csv)`
     - Error rate : 20% 
 
+
 ---
 
 ## 1. KFS (산림청) API `(kfs_data/*.csv)`
