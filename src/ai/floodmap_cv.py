@@ -9,10 +9,6 @@ from typing import Tuple, List
 import cv2
 import numpy as np
 
-"""
-55% Validation accuracy
-"""
-
 H_LO = 96
 H_HI = 124
 S_LO = 169
@@ -66,6 +62,7 @@ def mask_flood_bgr(img_bgr: np.ndarray) -> np.ndarray:
 def components(mask: np.ndarray) -> Tuple[int, np.ndarray, np.ndarray, np.ndarray]:
     return cv2.connectedComponentsWithStats(mask, connectivity=8, ltype=cv2.CV_32S)
 
+
 def process_image(path: str, out_csv: str) -> int:
     gb, (W_decl, H_decl), map_name = parse_bounds_from_name(path)
     img = cv2.imread(path, cv2.IMREAD_COLOR)
@@ -79,36 +76,26 @@ def process_image(path: str, out_csv: str) -> int:
         )
 
     mask = mask_flood_bgr(img)
-    num_labels, labels, stats, centroids = components(mask)
-
     total_area = float(W * H)
-    rows: List[List] = []
+    rows = []
     next_id = 0
 
-    for label in range(1, num_labels):
-        x, y, w, h, area = stats[label]
-        if area < MIN_AREA_PIXELS:
-            continue
-        cx, cy = centroids[label]
+    for y in range(H):
+        for x in range(W):
+            if mask[y, x] > 0:
+                lon, lat = gb.px_to_lonlat(x, y, W, H)
 
-        lon, lat = gb.px_to_lonlat(cx, cy, W, H)
-
-        lon_min, lat_max = gb.px_to_lonlat(x, y, W, H)
-        lon_max, lat_min = gb.px_to_lonlat(x + w - 1, y + h - 1, W, H)
-
-        size_ratio = area / total_area
-
-        rows.append([
-            next_id,
-            round(lat, 8), round(lon, 8),
-            size_ratio,
-            int(area),
-            float(cx), float(cy),
-            round(lat_min, 8), round(lon_min, 8),
-            round(lat_max, 8), round(lon_max, 8),
-            map_name
-        ])
-        next_id += 1
+                rows.append([
+                    next_id,
+                    round(lat, 8), round(lon, 8),
+                    1 / total_area,
+                    1,
+                    float(x), float(y),
+                    round(lat, 8), round(lon, 8),
+                    round(lat, 8), round(lon, 8),
+                    map_name
+                ])
+                next_id += 1
 
     header = [
         "id",

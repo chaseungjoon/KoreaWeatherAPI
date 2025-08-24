@@ -34,11 +34,9 @@ def csv_to_png(csv_path: str, output_png_path: str) -> None:
     for _, row in df.iterrows():
         x = int(round(row['pixel_centroid_x']))
         y = int(round(row['pixel_centroid_y']))
-        pixel_area = int(row['pixel_area'])
 
         if 0 <= x < width and 0 <= y < height:
-            radius = max(1, int(np.sqrt(pixel_area / np.pi)))
-            cv2.circle(img, (x, y), radius, (255, 0, 0), -1)
+            img[y, x] = [255, 0, 0]
 
     cv2.imwrite(output_png_path, img)
     print(f"Generated PNG: {output_png_path}")
