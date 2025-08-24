@@ -4,6 +4,7 @@ import os
 KMA_WEATHER_TOKEN = os.getenv("KMA_WEATHER_TOKEN")
 NASA_FIRMS_MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
 SAFEMAP_API_KEY = os.getenv("SAFEMAP_API_KEY")
+HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
 
 """ directories """
 DOWNLOAD_DEFAULT_DIR = "/Users/chaseungjun/Downloads"

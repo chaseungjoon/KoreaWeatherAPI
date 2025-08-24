@@ -6,3 +6,6 @@ xarray
 netcdf4
 pyproj
 Pillow
+huggingface_hub
+transformers
+opencv-python
