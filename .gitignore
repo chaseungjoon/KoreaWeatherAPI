@@ -3,3 +3,4 @@
 .DS_Store
 *.html
 __pycache__
+safemap_data/csv/flood_map(124,33,132,39)(24576X24576).csv
