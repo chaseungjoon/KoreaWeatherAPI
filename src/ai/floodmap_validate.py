@@ -32,7 +32,6 @@ def csv_to_png(csv_path: str, output_png_path: str) -> None:
     img = np.zeros((height, width, 3), dtype=np.uint8)
     
     for _, row in df.iterrows():
-        # Use the exact pixel coordinates from detection instead of converting lat/lon
         x = int(round(row['pixel_centroid_x']))
         y = int(round(row['pixel_centroid_y']))
         pixel_area = int(row['pixel_area'])
@@ -58,32 +57,26 @@ def calculate_difference(original_png: str, generated_png: str) -> Tuple[np.ndar
         print(f"Resizing generated image from {generated.shape} to {original.shape}")
         generated = cv2.resize(generated, (original.shape[1], original.shape[0]))
     
-    # Create masks for flood areas only (not background)
-    original_flood_mask = np.any(original != [255, 255, 255], axis=2)  # Non-white pixels in original
-    generated_flood_mask = np.any(generated != [0, 0, 0], axis=2)      # Non-black pixels in generated
+    original_flood_mask = np.any(original != [255, 255, 255], axis=2)
+    generated_flood_mask = np.any(generated != [0, 0, 0], axis=2)
     
-    # Count flood pixels in each image
     orig_flood_count = np.sum(original_flood_mask)
     gen_flood_count = np.sum(generated_flood_mask)
     
-    # Calculate overlap - pixels that have flood detection in both images
     overlap = original_flood_mask & generated_flood_mask
     overlap_count = np.sum(overlap)
     
-    # Calculate missed detections and false positives
-    missed = original_flood_mask & ~generated_flood_mask  # Original flood areas not detected
-    false_positive = generated_flood_mask & ~original_flood_mask  # Detected areas that aren't original floods
+    missed = original_flood_mask & ~generated_flood_mask
+    false_positive = generated_flood_mask & ~original_flood_mask
     
     missed_count = np.sum(missed)
     false_pos_count = np.sum(false_positive)
     
-    # Create a visualization difference image
     diff_vis = np.zeros_like(original)
-    diff_vis[overlap] = [0, 255, 0]        # Green for correct detections
-    diff_vis[missed] = [0, 0, 255]         # Red for missed flood areas  
-    diff_vis[false_positive] = [255, 0, 0] # Blue for false positives
+    diff_vis[overlap] = [0, 255, 0]
+    diff_vis[missed] = [0, 0, 255]
+    diff_vis[false_positive] = [255, 0, 0]
     
-    # Calculate loss as percentage of flood areas that don't match
     total_flood_union = np.sum(original_flood_mask | generated_flood_mask)
     if total_flood_union == 0:
         loss_percentage = 0.0
