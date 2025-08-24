@@ -7,14 +7,14 @@ SAFEMAP_API_KEY = os.getenv("SAFEMAP_API_KEY")
 HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
 
 """ directories """
-DOWNLOAD_DEFAULT_DIR = "/Users/chaseungjun/Downloads"
-ROOT_DIR = "/Users/chaseungjun/PycharmProjects/WeatherAPI-test"
-FIRE_DATA_DIR = os.path.join(ROOT_DIR, "firms_data")
-MAP_DATA_DIR = os.path.join(ROOT_DIR, "map_data")
-WEATHER_DATA_DIR = os.path.join(ROOT_DIR, "kma_data")
-SATELLITE_DATA_DIR = os.path.join(ROOT_DIR, "GK2A_data")
-KFS_DATA_DIR = os.path.join(ROOT_DIR, "kfs_data")
-SAFEMAP_DATA_DIR = os.path.join(ROOT_DIR, "safemap_data")
+DOWNLOAD_DEFAULT_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
+PROJECT_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FIRE_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "firms_data")
+MAP_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "map_data")
+WEATHER_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "kma_data")
+SATELLITE_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "GK2A_data")
+KFS_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "kfs_data")
+SAFEMAP_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "safemap_data")
 
 """ files """
 GRID_PATH = os.path.join(MAP_DATA_DIR, "grid.csv")
