@@ -90,10 +90,16 @@ def fetch_recent():
     get_kfs_fire_data()
     draw_kfs_fire_grid()
 
+def fetch_fire():
+    get_kfs_fire_data()
+    draw_kfs_fire_grid()
+
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
-    fetch_recent()
+    #fetch_recent()
+
+    fetch_fire()
 
     """ Load grids """
     grid = load_grid()
