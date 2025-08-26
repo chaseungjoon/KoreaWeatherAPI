@@ -80,7 +80,12 @@ def draw_kfs_fire_grid():
     m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
 
     for d in grid:
-        icon_color = "green" if d.get("PROGRESS") == 3 else "red"
+        if d.get("PROGRESS") <3:
+            icon_color = "red"
+        elif d.get("PROGRESS") ==3:
+            icon_color = "green"
+        else:
+            icon_color = "blue"
 
         popup_text = (
             f"발생일시 : {d.get('DATE')}\n"
