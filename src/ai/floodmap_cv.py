@@ -5,7 +5,7 @@ import glob
 import csv
 from src.config import SAFEMAP_DATA_DIR
 from dataclasses import dataclass
-from typing import Tuple, List
+from typing import Tuple
 import cv2
 import numpy as np
 
