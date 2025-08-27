@@ -5,6 +5,7 @@ KMA_WEATHER_TOKEN = os.getenv("KMA_WEATHER_TOKEN")
 NASA_FIRMS_MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
 SAFEMAP_API_KEY = os.getenv("SAFEMAP_API_KEY")
 HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
+KFS_LANDSLIDE_KEY = os.getenv("KFS_LANDSLIDE_KEY")
 
 """ directories """
 DOWNLOAD_DEFAULT_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -31,6 +32,7 @@ KMA_SATELLITE_BASE_URL = "https://apihub.kma.go.kr/api/typ05/api/GK2A/LE2/FF/KO/
 
 """kfs api"""
 KFS_REALTIME_URL = "https://fd.forest.go.kr/ffas/pubConn/selectPublicFireShowList.do"
+KFS_LANDSLIDE_URL = f"https://www.safetydata.go.kr/V2/api/DSSP-IF-00735?serviceKey={KFS_LANDSLIDE_KEY}"
 
 """ safemap api"""
 SAFEMAP_BASE_URL = "http://www.safemap.go.kr/openApiService/wms/getLayerData.do"
