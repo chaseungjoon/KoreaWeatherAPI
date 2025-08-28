@@ -117,9 +117,7 @@ def draw_kfs_landslide_grid():
     for d in grid:
         if d.get("WARNING_LEVEL") == "주의보":
             icon_color = "orange"
-        elif d.get("WARNING_LEVEL") == "경계":
-            icon_color = "yellow"
-        elif d.get("WARNING_LEVEL") == "심각":
+        elif d.get("WARNING_LEVEL") == "경보":
             icon_color = "red"
         else: icon_color = "green"
         popup_text = (
