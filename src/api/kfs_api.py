@@ -75,47 +75,6 @@ def get_kfs_landslide_data():
     except (IOError, IndexError) as e:
         print(e)
 
-    """ Example response
-    {
-        "header": {
-            "resultMsg": "NORMAL SERVICE",
-            "resultCode": "00",
-            "errorMsg": null
-        },
-        "numOfRows": 1000,
-        "pageNo": 1,
-        "totalCount": 26,
-        "body": [
-            {"PREDC_ANLS_DT": "2025-08-26 03:00:00", "SGG_NM": "충청남도 보령시", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 03:00:00", "SGG_NM": "충청남도 태안군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 05:00:00", "SGG_NM": "세종특별자치시", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 05:00:00", "SGG_NM": "충청북도 청주시 흥덕구", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 05:00:00", "SGG_NM": "강원특별자치도 철원군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 05:00:00", "SGG_NM": "충청남도 천안시 동남구", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 11:00:00", "SGG_NM": "경기도 가평군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 08:00:00", "SGG_NM": "경기도 가평군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 08:00:00", "SGG_NM": "강원특별자치도 화천군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 08:00:00", "SGG_NM": "경기도 포천시", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 08:00:00", "SGG_NM": "강원특별자치도 철원군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 08:00:00", "SGG_NM": "충청남도 서천군", "LNLD_FRCST_NM": null},
-            {"PREDC_ANLS_DT": "2025-08-26 12:00:00", "SGG_NM": "경상남도 산청군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 09:00:00", "SGG_NM": "경기도 가평군", "LNLD_FRCST_NM": null},
-            {"PREDC_ANLS_DT": "2025-08-26 09:00:00", "SGG_NM": "강원특별자치도 화천군", "LNLD_FRCST_NM": null},
-            {"PREDC_ANLS_DT": "2025-08-26 09:00:00", "SGG_NM": "경기도 포천시", "LNLD_FRCST_NM": null},
-            {"PREDC_ANLS_DT": "2025-08-26 10:00:00", "SGG_NM": "경기도 포천시", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 06:00:00", "SGG_NM": "경기도 연천군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 06:00:00", "SGG_NM": "경기도 포천시", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 06:00:00", "SGG_NM": "충청북도 진천군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 06:00:00", "SGG_NM": "충청북도 증평군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 06:00:00", "SGG_NM": "충청북도 음성군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 07:00:00", "SGG_NM": "경기도 연천군", "LNLD_FRCST_NM": null},
-            {"PREDC_ANLS_DT": "2025-08-26 07:00:00", "SGG_NM": "강원특별자치도 화천군", "LNLD_FRCST_NM": "주의보"},
-            {"PREDC_ANLS_DT": "2025-08-26 07:00:00", "SGG_NM": "경기도 포천시", "LNLD_FRCST_NM": null},
-            {"PREDC_ANLS_DT": "2025-08-26 07:00:00", "SGG_NM": "강원특별자치도 철원군", "LNLD_FRCST_NM": "주의보"}
-        ]
-    }
-    """
-
 """ MONITORING API CALL """
 def test_kfs_api():
     print("--------KFS FIRE DATA--------")
