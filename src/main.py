@@ -3,7 +3,7 @@ from api.kfs_api import get_kfs_fire_data, get_kfs_landslide_data
 from api.nasa_api import get_firms_data
 from api.safemap_api import get_safemap_flood_data
 from csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, load_kfs_landslide_grid
-from visualizer import draw_kfs_fire_grid, draw_firms_fire_grid, draw_GK2A_fire_grid
+from visualizer import draw_kfs_fire_grid, draw_firms_fire_grid, draw_GK2A_fire_grid, draw_kfs_landslide_grid
 from config import *
 
 """
@@ -53,6 +53,14 @@ from config import *
         * 첫번째 parameter : 이미지 해상도 (1~10, 높을수록 화질 좋음)
         
             get_safemap_flood_data(4)
+
+4. 산사태 데이터
+
+    산림청 산사태 예측 API
+        * 5분단위 업데이트
+        * 시군구단위까지만 제공 (상세한 위/경도 X)
+        
+            get_kfs_landslide_data()
         
 4. 각 정보 csv 파일 로드
 
@@ -62,6 +70,7 @@ from config import *
         nasa_fire_grid = load_nasa_fire_grid()
         GK2A_fire_grid = load_GK2A_fire_grid()
         kfs_fire_grid = load_kfs_fire_grid()
+        kfs_landslide_grid = load_kfs_landslide_grid()
     
 4. 각 정보 지도 그리기
 
@@ -71,6 +80,7 @@ from config import *
         draw_nasa_fire_grid()
         draw_GK2A_fire_grid()
         draw_kfs_fire_grid()
+        draw_kfs_landslide_grid()
 
 """
 
@@ -92,7 +102,7 @@ def fetch_recent():
 
     # 산림청 산사태 예측정보
     get_kfs_landslide_data()
-
+    draw_kfs_landslide_grid()
 
 def fetch_fire():
     get_kfs_fire_data()
@@ -101,9 +111,7 @@ def fetch_fire():
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
-    #fetch_recent()
-
-    #fetch_fire()
+    fetch_recent()
 
     """ Load grids """
     grid = load_grid()
@@ -111,5 +119,3 @@ if __name__ == "__main__":
     GK2A_fire_grid = load_GK2A_fire_grid()
     kfs_fire_grid = load_kfs_fire_grid()
     kfs_landslide_grid = load_kfs_landslide_grid()
-
-    print(kfs_landslide_grid[:3])
