@@ -1,8 +1,8 @@
 from api.kma_api import get_all_weather_data, get_GK2A_fire_data
-from api.kfs_api import get_kfs_fire_data
+from api.kfs_api import get_kfs_fire_data, get_kfs_landslide_data
 from api.nasa_api import get_firms_data
 from api.safemap_api import get_safemap_flood_data
-from csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid
+from csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, load_kfs_landslide_grid
 from visualizer import draw_kfs_fire_grid, draw_firms_fire_grid, draw_GK2A_fire_grid
 from config import *
 
@@ -90,6 +90,10 @@ def fetch_recent():
     get_kfs_fire_data()
     draw_kfs_fire_grid()
 
+    # 산림청 산사태 예측정보
+    get_kfs_landslide_data()
+
+
 def fetch_fire():
     get_kfs_fire_data()
     draw_kfs_fire_grid()
@@ -99,10 +103,13 @@ if __name__ == "__main__":
     """ Fetch most recent data"""
     #fetch_recent()
 
-    fetch_fire()
+    #fetch_fire()
 
     """ Load grids """
     grid = load_grid()
     nasa_fire_grid = load_firms_fire_grid()
     GK2A_fire_grid = load_GK2A_fire_grid()
     kfs_fire_grid = load_kfs_fire_grid()
+    kfs_landslide_grid = load_kfs_landslide_grid()
+
+    print(kfs_landslide_grid[:3])

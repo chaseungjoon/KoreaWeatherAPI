@@ -1,6 +1,6 @@
 import csv
 import os
-from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR
+from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR, korea_administrative_divisions
 
 
 def get_recent_file(path):
@@ -105,5 +105,36 @@ def load_kfs_fire_grid():
             result.append(item)
 
     return result
-                             
 
+
+def load_kfs_landslide_grid():
+    landslide_file_path = get_recent_file(os.path.join(KFS_DATA_DIR, "landslide"))
+    if not landslide_file_path:
+        return []
+
+    result = []
+    with open(landslide_file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row['LNLD_FRCST_NM']:
+                location = row['SGG_NM']
+                item = {
+                    'DATE': row['PREDC_ANLS_DT'],
+                    'LOCATION': location,
+                    'WARNING_LEVEL': row['LNLD_FRCST_NM']
+                }
+
+                if location in korea_administrative_divisions:
+                    coord_data = korea_administrative_divisions[location]
+                    item['LAT'] = coord_data['lat']
+                    item['LON'] = coord_data['lon']
+                else:
+                    print(f"{location} not in reference db")
+                    item['LAT'] = None
+                    item['LON'] = None
+
+                result.append(item)
+            else:
+                continue
+
+    return result
