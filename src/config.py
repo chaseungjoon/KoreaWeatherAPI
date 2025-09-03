@@ -6,6 +6,7 @@ NASA_FIRMS_MAP_KEY = os.getenv("NASA_FIRMS_MAP_KEY")
 SAFEMAP_API_KEY = os.getenv("SAFEMAP_API_KEY")
 HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
 KFS_LANDSLIDE_KEY = os.getenv("KFS_LANDSLIDE_KEY")
+DATAGOKR_API_KEY = os.getenv("DATAGOKR_API_KEY")
 
 """ directories """
 DOWNLOAD_DEFAULT_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -16,6 +17,7 @@ WEATHER_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "kma_data")
 SATELLITE_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "GK2A_data")
 KFS_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "kfs_data")
 SAFEMAP_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "safemap_data")
+UV_DATA_DIR = os.path.join(WEATHER_DATA_DIR, "uv")
 
 """ files """
 GRID_PATH = os.path.join(MAP_DATA_DIR, "grid.csv")
@@ -29,6 +31,7 @@ KMA_ENDPOINTS = {
         4: {"url": KMA_AWS_BASE_URL + f"_vis?authKey={KMA_WEATHER_TOKEN}", "filename": "AWS_vis", "filetype":"csv", "desc": "AWS 가시거리"},
 }
 KMA_SATELLITE_BASE_URL = "https://apihub.kma.go.kr/api/typ05/api/GK2A/LE2/FF/KO/data?date="
+KMA_UV_BASE_URL = f"http://apis.data.go.kr/1360000/LivingWthrIdxServiceV4/getUVIdxV4?serviceKey={DATAGOKR_API_KEY}&pageNo=1&numOfRows=10000&dataType=JSON"
 
 """kfs api"""
 KFS_REALTIME_URL = "https://fd.forest.go.kr/ffas/pubConn/selectPublicFireShowList.do"

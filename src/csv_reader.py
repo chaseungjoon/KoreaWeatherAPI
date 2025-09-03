@@ -1,6 +1,7 @@
 import csv
 import os
 from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR, korea_administrative_divisions
+from src.config import MAP_DATA_DIR
 
 
 def get_recent_file(path):
@@ -10,6 +11,20 @@ def get_recent_file(path):
 
     latest_file = max(csv_files)
     return os.path.join(path, latest_file)
+
+def load_korea_administrative_zone_code():
+    result = []
+    path = os.path.join(MAP_DATA_DIR, "korea_administrative_zone_code.csv")
+    with open(path, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            result.append({
+                'CODE': int(row['행정구역코드']),
+                'ADDRESS': row['지역'],
+                'LON': float(row['경도(초/100)']),
+                'LAT': float(row['위도(초/100)'])
+            })
+    return result
 
 def load_grid():
     result = []

@@ -7,10 +7,63 @@ import numpy as np
 import netCDF4 as nc
 from pyproj import Proj
 from datetime import datetime, timedelta
-from src.config import KMA_ENDPOINTS, WEATHER_DATA_DIR, SATELLITE_DATA_DIR, KMA_WEATHER_TOKEN, KMA_SATELLITE_BASE_URL
+from src.config import KMA_ENDPOINTS, WEATHER_DATA_DIR, SATELLITE_DATA_DIR, KMA_WEATHER_TOKEN, KMA_SATELLITE_BASE_URL, KMA_UV_BASE_URL, UV_DATA_DIR
+from src.csv_reader import load_korea_administrative_zone_code
 
 np.seterr(invalid="ignore", divide="ignore")
 
+def get_uv_data():
+    now = datetime.now()
+    hour = (now.hour // 3) * 3
+    adjusted_time = now.replace(hour=hour, minute=0, second=0, microsecond=0)
+    timestamp = adjusted_time.strftime("%Y%m%d%H")
+
+    addresses = load_korea_administrative_zone_code()
+    result = []
+    for address in addresses:
+        url = KMA_UV_BASE_URL + "&time="+ timestamp + "&areaNo=" + str(address['CODE'])
+        try:
+            response = requests.get(url)
+            data = response.json()
+            body = data.get("body", {})
+            items = body.get("items", {})
+            item_list = items.get("item", [])
+
+            for item in item_list:
+                uv_record = {
+                    'CODE': address['CODE'],
+                    'DATE': item.get('date', ''),
+                    'ADDRESS': address['ADDRESS'],
+                    'LAT': address['LAT'],
+                    'LON': address['LON']
+                }
+
+                for hour in range(0, 76, 3):
+                    hour_key = f"h{hour}"
+                    uv_value = item.get(hour_key, '')
+                    if uv_value == '':
+                        uv_value = None
+                    elif uv_value.isdigit():
+                        uv_value = int(uv_value)
+                    uv_record[hour_key] = uv_value
+
+                result.append(uv_record)
+
+        except Exception as e:
+            print(f"Error fetching UV data for area {address['ADDRESS']}: {e}")
+            continue
+
+    if result:
+        out_dir = os.path.join(UV_DATA_DIR, f"uv_{timestamp}.csv")
+        fieldnames = ['CODE', 'ADDRESS', 'DATE', 'LAT', 'LON']
+        fieldnames.extend([f"h{i}" for i in range(0, 76, 3)])
+
+        with open(out_dir, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(result)
+    else:
+        print("No UV data retrieved")
 
 def get_weather_data(endpoint, out_dir):
     if endpoint not in KMA_ENDPOINTS:
@@ -46,7 +99,6 @@ def get_all_weather_data():
     os.makedirs(out_dir, exist_ok=True)
     for endpoint in KMA_ENDPOINTS:
         get_weather_data(endpoint, out_dir)
-
 
 def nc_to_csv(nc_file: str):
     ds = nc.Dataset(nc_file, 'r')

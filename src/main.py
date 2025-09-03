@@ -1,4 +1,4 @@
-from api.kma_api import get_all_weather_data, get_GK2A_fire_data
+from api.kma_api import get_all_weather_data, get_GK2A_fire_data, get_uv_data
 from api.kfs_api import get_kfs_fire_data, get_kfs_landslide_data
 from api.nasa_api import get_firms_data
 from api.safemap_api import get_safemap_flood_data
@@ -111,7 +111,8 @@ def fetch_fire():
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
-    fetch_recent()
+    #fetch_recent()
+    get_uv_data()
 
     """ Load grids """
     grid = load_grid()
