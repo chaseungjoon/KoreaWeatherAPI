@@ -3,6 +3,8 @@ from api.kfs_api import get_kfs_fire_data, get_kfs_landslide_data
 from api.nasa_api import get_firms_data
 from api.safemap_api import get_safemap_flood_data
 from csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, load_kfs_landslide_grid
+from src.csv_reader import load_uv_index_grid
+from src.visualizer import draw_uv_index_grid
 from visualizer import draw_kfs_fire_grid, draw_firms_fire_grid, draw_GK2A_fire_grid, draw_kfs_landslide_grid
 from config import *
 
@@ -20,6 +22,12 @@ from config import *
         * kma_data 폴더에 timestamp 폴더 생성 후, 그 안에 Endpoint 종류별로 .csv로 저장
     
             get_all_weather_data()
+
+    기상청 생활기상지수 자외선
+        * 3시간 단위 업데이트 (00시, 03시, ... , 21시)
+        * 현재시간으로부터 3시간후, 6시간 후, ~ 57시간 후까지의 자외선 인덱스 예측
+        
+            get_uv_data()
 
 2. 화재 데이터
         
@@ -71,6 +79,7 @@ from config import *
         GK2A_fire_grid = load_GK2A_fire_grid()
         kfs_fire_grid = load_kfs_fire_grid()
         kfs_landslide_grid = load_kfs_landslide_grid()
+        uv_index_grid = load_uv_index_grid()
     
 4. 각 정보 지도 그리기
 
@@ -81,6 +90,7 @@ from config import *
         draw_GK2A_fire_grid()
         draw_kfs_fire_grid()
         draw_kfs_landslide_grid()
+        draw_uv_index_grid(lookup_hours = 3)
 
 """
 
@@ -106,6 +116,7 @@ def fetch_recent():
 
     # 기상청 자외선 정보
     get_uv_data()
+    draw_uv_index_grid(lookup_hours=3)
 
 def fetch_fire():
     get_kfs_fire_data()
@@ -114,8 +125,7 @@ def fetch_fire():
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
-    #fetch_recent()
-    get_uv_data()
+    fetch_recent()
 
     """ Load grids """
     grid = load_grid()
@@ -123,3 +133,4 @@ if __name__ == "__main__":
     GK2A_fire_grid = load_GK2A_fire_grid()
     kfs_fire_grid = load_kfs_fire_grid()
     kfs_landslide_grid = load_kfs_landslide_grid()
+    uv_index_grid = load_uv_index_grid()

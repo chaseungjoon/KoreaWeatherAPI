@@ -1,7 +1,9 @@
 import os
 import folium
+from jinja2.ext import loopcontrols
+
 from src.csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, \
-    load_kfs_landslide_grid
+    load_kfs_landslide_grid, load_uv_index_grid
 from config import MAP_DATA_DIR
 
 def draw_grid():
@@ -101,6 +103,40 @@ def draw_kfs_fire_grid():
             location=[d.get("LAT"), d.get("LON")],
             popup=popup_text,
             icon=folium.Icon(color=icon_color, icon="info-sign")
+        ).add_to(m)
+
+    m.save(save_path)
+
+def draw_uv_index_grid(lookup_hours):
+    save_path = os.path.join(MAP_DATA_DIR, f"uv_index_{lookup_hours}hr.html")
+    grid = load_uv_index_grid()
+    if not grid:
+        return
+    center_lat = sum(d['LAT'] for d in grid) / len(grid)
+    center_lon = sum(d['LON'] for d in grid) / len(grid)
+
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
+    for d in grid:
+        lookup_index = "h"+str(lookup_hours)
+        if d[lookup_index] < 3:
+            popup_text = "낮음"
+            color = "lightgreen"
+        elif d[lookup_index] < 6:
+            popup_text = "보통"
+            color = "green"
+        elif d[lookup_index] < 8:
+            popup_text = "높음"
+            color = "orange"
+        elif d[lookup_index] < 11:
+            popup_text = "매우높음"
+            color = "red"
+        else:
+            popup_text = "위험"
+            color = "black"
+        folium.Marker(
+            location=[d['LAT'], d['LON']],
+            popup=popup_text,
+            icon=folium.Icon(color=color, icon="info-sign")
         ).add_to(m)
 
     m.save(save_path)

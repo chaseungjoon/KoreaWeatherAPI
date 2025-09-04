@@ -1,7 +1,6 @@
 import csv
 import os
-from config import GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR, korea_administrative_divisions
-from src.config import MAP_DATA_DIR
+from config import MAP_DATA_DIR, GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR, UV_DATA_DIR, korea_administrative_divisions
 
 
 def get_recent_file(path):
@@ -68,6 +67,41 @@ def load_GK2A_fire_grid():
             })
 
         return result
+
+def load_uv_index_grid():
+    uv_file_path = get_recent_file(UV_DATA_DIR)
+    if not uv_file_path:
+        return []
+
+    result = []
+    with open(uv_file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            result.append({
+                'LAT': float(row['LAT']),
+                'LON': float(row['LON']),
+                'h0': float(row['h0']),
+                'h3': float(row['h3']),
+                'h6': float(row['h6']),
+                'h9': float(row['h9']),
+                'h12': float(row['h12']),
+                'h15': float(row['h15']),
+                'h18': float(row['h18']),
+                'h21': float(row['h21']),
+                'h24': float(row['h24']),
+                'h27': float(row['h27']),
+                'h30': float(row['h30']),
+                'h33': float(row['h33']),
+                'h36': float(row['h36']),
+                'h39': float(row['h39']),
+                'h42': float(row['h42']),
+                'h45': float(row['h45']),
+                'h48': float(row['h48']),
+                'h51': float(row['h51']),
+                'h54': float(row['h54']),
+                'h57': float(row['h57'])
+            })
+    return result
 
 def load_firms_fire_grid():
     fire_file_path = get_recent_file(FIRE_DATA_DIR)
