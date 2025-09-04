@@ -25,7 +25,8 @@ def get_uv_data():
         try:
             response = requests.get(url)
             data = response.json()
-            body = data.get("body", {})
+            resp = data.get("response", {})
+            body = resp.get("body", {})
             items = body.get("items", {})
             item_list = items.get("item", [])
 
@@ -48,9 +49,11 @@ def get_uv_data():
                     uv_record[hour_key] = uv_value
 
                 result.append(uv_record)
+                print(f"Fetched {uv_record['ADDRESS']}")
 
         except Exception as e:
             print(f"Error fetching UV data for area {address['ADDRESS']}: {e}")
+            print(f"Try again with the following url: {url}\n")
             continue
 
     if result:

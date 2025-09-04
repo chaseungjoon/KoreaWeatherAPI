@@ -104,6 +104,9 @@ def fetch_recent():
     get_kfs_landslide_data()
     draw_kfs_landslide_grid()
 
+    # 기상청 자외선 정보
+    get_uv_data()
+
 def fetch_fire():
     get_kfs_fire_data()
     draw_kfs_fire_grid()
