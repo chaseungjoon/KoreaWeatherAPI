@@ -155,6 +155,34 @@ def load_kfs_fire_grid():
 
     return result
 
+def load_kfs_warning_grid():
+    warning_file_path = get_recent_file(os.path.join(KFS_DATA_DIR, "warning_list"))
+    if not warning_file_path:
+        return []
+
+    result = []
+    with open(warning_file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            location = row['LOCATION']
+            item = {
+                'DATE': row['DATE'],
+                'LOCATION': location,
+                'WARNING_LEVEL': row['WARNING_LEVEL']
+            }
+
+            if location in korea_administrative_divisions:
+                coord_data = korea_administrative_divisions[location]
+                item['LAT'] = coord_data['lat']
+                item['LON'] = coord_data['lon']
+            else:
+                print(f"{location} not in reference db")
+                item['LAT'] = None
+                item['LON'] = None
+
+            result.append(item)
+    return result
+
 
 def load_kfs_landslide_grid():
     landslide_file_path = get_recent_file(os.path.join(KFS_DATA_DIR, "landslide"))

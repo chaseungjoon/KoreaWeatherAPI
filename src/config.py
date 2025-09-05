@@ -35,6 +35,7 @@ KMA_UV_BASE_URL = f"http://apis.data.go.kr/1360000/LivingWthrIdxServiceV4/getUVI
 
 """kfs api"""
 KFS_REALTIME_URL = "https://fd.forest.go.kr/ffas/pubConn/selectPublicFireShowList.do"
+KFS_WARNINGLIST_URL = "https://fd.forest.go.kr/ffas/new/getFireWarningList.do"
 KFS_LANDSLIDE_URL = f"https://www.safetydata.go.kr/V2/api/DSSP-IF-00735?serviceKey={KFS_LANDSLIDE_KEY}"
 
 """ safemap api"""

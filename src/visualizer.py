@@ -3,7 +3,7 @@ import folium
 from jinja2.ext import loopcontrols
 
 from src.csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, \
-    load_kfs_landslide_grid, load_uv_index_grid
+    load_kfs_landslide_grid, load_uv_index_grid, load_kfs_warning_grid
 from config import MAP_DATA_DIR
 
 def draw_grid():
@@ -140,6 +140,40 @@ def draw_uv_index_grid(lookup_hours):
         else:
             popup_text = "위험"
             color = "black"
+        folium.Marker(
+            location=[d['LAT'], d['LON']],
+            popup=popup_text,
+            icon=folium.Icon(color=color, icon="info-sign")
+        ).add_to(m)
+
+    m.save(save_path)
+
+def draw_kfs_warning_grid():
+    save_path = os.path.join(MAP_DATA_DIR, "fire_map_kfs_warning.html")
+    grid = load_kfs_warning_grid()
+    if not grid:
+        return
+
+    center_lat = sum(d['LAT'] for d in grid) / len(grid)
+    center_lon = sum(d['LON'] for d in grid) / len(grid)
+
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
+    for d in grid:
+        if d.get("WARNING_LEVEL") == "관심":
+            color = "blue"
+        elif d.get("WARNING_LEVEL") == "주의":
+            color = "orange"
+        elif d.get("WARNING_LEVEL") == "경계":
+            color = "red"
+        elif d.get("WARNING_LEVEL") == "심각":
+            color = "black"
+        else: color = "white"
+
+        popup_text = (
+            f"일시 : {d.get('DATE')}\n"
+            f"주소 : {d.get('LOCATION')}\n"
+            f"단계 : {d.get('WARNING_LEVEL')}"
+        )
         folium.Marker(
             location=[d['LAT'], d['LON']],
             popup=popup_text,
