@@ -116,7 +116,8 @@ def fetch_recent():
 
     # 기상청 자외선 정보
     get_uv_data()
-    draw_uv_index_grid(lookup_hours=3)
+    for i in range(3,13,3):
+        draw_uv_index_grid(lookup_hours=i)
 
 def fetch_fire():
     get_kfs_fire_data()
@@ -127,7 +128,9 @@ if __name__ == "__main__":
     """ Fetch most recent data"""
     fetch_recent()
 
-    """ Load grids """
+    """ Load grids     
+    grid = List[ dict_1{}, dict_2{}, ... , dict_n{} ]
+    """
     grid = load_grid()
     nasa_fire_grid = load_firms_fire_grid()
     GK2A_fire_grid = load_GK2A_fire_grid()

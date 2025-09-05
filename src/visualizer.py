@@ -108,6 +108,13 @@ def draw_kfs_fire_grid():
     m.save(save_path)
 
 def draw_uv_index_grid(lookup_hours):
+    if lookup_hours %3 !=0:
+        print("Lookup hours should be a multiple of 3")
+        return
+    elif lookup_hours > 57 or lookup_hours < 0:
+        print("Lookup hours should be between 0 and 57")
+        return
+
     save_path = os.path.join(MAP_DATA_DIR, f"uv_index_{lookup_hours}hr.html")
     grid = load_uv_index_grid()
     if not grid:
