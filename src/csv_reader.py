@@ -1,6 +1,6 @@
 import csv
 import os
-from config import MAP_DATA_DIR, GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR, UV_DATA_DIR, korea_administrative_divisions
+from config import MAP_DATA_DIR, GRID_PATH, FIRE_DATA_DIR, SATELLITE_DATA_DIR, KFS_DATA_DIR, UV_DATA_DIR, MOE_DATA_DIR, korea_administrative_divisions
 
 
 def get_recent_file(path):
@@ -214,4 +214,26 @@ def load_kfs_landslide_grid():
             else:
                 continue
 
+    return result
+
+def load_moe_flood_grid():
+    flood_file_path = get_recent_file(MOE_DATA_DIR)
+    if not flood_file_path:
+        return []
+
+    result = []
+    with open(flood_file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            item = {
+                'LAT': float(row['lat']),
+                'LON': float(row['\ufefflon']),
+                'OBSERVATION_POINT_NAME': row['obsnm'],
+                'OBSERVATION_POINT_CODE': row['obscd'],
+                'DATE': row['ymdhm'],
+                'WATER_LEVEL': float(row['wl']),
+                'WARNING_LEVEL': float(row['wrnwl']),
+                'ALERT_LEVEL': row['almwl']
+            }
+            result.append(item)
     return result

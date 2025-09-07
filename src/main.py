@@ -4,8 +4,8 @@ from api.nasa_api import get_firms_data
 from api.moe_api import get_flood_data
 from api.safemap_api import get_safemap_flood_data
 from csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, load_kfs_landslide_grid
-from src.csv_reader import load_uv_index_grid, load_kfs_warning_grid
-from src.visualizer import draw_uv_index_grid
+from src.csv_reader import load_uv_index_grid, load_kfs_warning_grid, load_moe_flood_grid
+from src.visualizer import draw_uv_index_grid, draw_moe_flood_grid
 from visualizer import draw_kfs_fire_grid, draw_firms_fire_grid, draw_GK2A_fire_grid, draw_kfs_landslide_grid, draw_kfs_warning_grid
 from config import *
 
@@ -74,7 +74,7 @@ from config import *
 
     산림청 산사태 예측 API
         * 5분단위 업데이트
-        * 시군구단위까지만 제공 (상세한 위/경도 X)
+        * 시군구단위까지만 제공 (상세한 위/경도 X) -> config의 korea_administrative_divisions로 위/경도 변환
         
             get_kfs_landslide_data()
         
@@ -88,6 +88,7 @@ from config import *
         kfs_fire_grid = load_kfs_fire_grid()
         kfs_landslide_grid = load_kfs_landslide_grid()
         uv_index_grid = load_uv_index_grid()
+        moe_flood_grid = load_moe_flood_grid()
     
 4. 각 정보 지도 그리기
 
@@ -99,6 +100,7 @@ from config import *
         draw_kfs_fire_grid()
         draw_kfs_landslide_grid()
         draw_uv_index_grid(lookup_hours = 3)
+        draw_moe_flood_grid()
 
 """
 
@@ -106,13 +108,15 @@ def fetch_recent():
     # 기상청 AWS 실시간 데이터
     get_all_weather_data()
 
-    # Nasa FIRMS 화재정보
+    """ Nasa FIRMS 화재정보
     get_firms_data()
     draw_firms_fire_grid()
+    """
 
-    # 천리안2호 위성 화재정보
+    """ 천리안2호 위성 화재정보
     get_GK2A_fire_data()
     draw_GK2A_fire_grid()
+    """
 
     # 산림청 실시간 산불정보
     get_kfs_fire_data()
@@ -133,6 +137,7 @@ def fetch_recent():
 
     # 환경부 실시간 홍수 정보
     get_flood_data()
+    draw_moe_flood_grid()
 
 if __name__ == "__main__":
 
@@ -147,3 +152,4 @@ if __name__ == "__main__":
     kfs_warning_grid = load_kfs_warning_grid()
     kfs_landslide_grid = load_kfs_landslide_grid()
     uv_index_grid = load_uv_index_grid()
+    moe_flood_grid = load_moe_flood_grid()

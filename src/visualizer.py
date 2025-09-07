@@ -3,7 +3,7 @@ import folium
 from jinja2.ext import loopcontrols
 
 from src.csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, \
-    load_kfs_landslide_grid, load_uv_index_grid, load_kfs_warning_grid
+    load_kfs_landslide_grid, load_uv_index_grid, load_kfs_warning_grid, load_moe_flood_grid
 from config import MAP_DATA_DIR
 
 def draw_grid():
@@ -201,6 +201,45 @@ def draw_kfs_landslide_grid():
             f"발생일시 : {d.get('DATE')}\n"
             f"주소 : {d.get('LOCATION')}\n"
             f"단계 : {d.get('WARNING_LEVEL')}"
+        )
+        folium.Marker(
+            location=[d.get("LAT"), d.get("LON")],
+            popup=popup_text,
+            icon=folium.Icon(color=icon_color, icon="info-sign")
+        ).add_to(m)
+
+    m.save(save_path)
+
+def draw_moe_flood_grid():
+    save_path = os.path.join(MAP_DATA_DIR, "flood_map_moe.html")
+    grid = load_moe_flood_grid()
+    if not grid:
+        return
+
+    center_lat = sum(d['LAT'] for d in grid) / len(grid)
+    center_lon = sum(d['LON'] for d in grid) / len(grid)
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
+    for d in grid:
+        cur = d.get("WATER_LEVEL")
+        warn = d.get("WARNING_LEVEL")
+        alert = d.get("ALERT_LEVEL")
+
+        if cur < warn:
+            icon_color = "blue"
+            level = "정상"
+        elif warn <= cur < alert:
+            icon_color = "orange"
+            level = "주의보"
+        elif cur >= alert:
+            icon_color = "red"
+            level = "경보"
+        else:
+            icon_color = "black"
+            level = "정보없음"
+        popup_text = (
+            f"관측일시 : {d.get('DATE')}\n"
+            f"주소 : {d.get('OBSERVATION_POINT_NAME')}\n"
+            f"단계 : {level}\n"
         )
         folium.Marker(
             location=[d.get("LAT"), d.get("LON")],

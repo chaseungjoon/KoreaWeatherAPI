@@ -4,8 +4,6 @@ import requests
 import csv
 from src.config import MOE_FLOOD_URL, MOE_DATA_DIR
 
-# csv_reader + visualizer 구현 필요
-
 def get_flood_data():
     """
     - 현재 시간을 가장 가까운 10분 단위로 반올림
