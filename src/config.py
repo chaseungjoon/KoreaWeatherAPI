@@ -18,6 +18,7 @@ SATELLITE_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "GK2A_data")
 KFS_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "kfs_data")
 SAFEMAP_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "safemap_data")
 UV_DATA_DIR = os.path.join(WEATHER_DATA_DIR, "uv")
+MOE_DATA_DIR = os.path.join(PROJECT_ROOT_DIR, "moe_data")
 
 """ files """
 GRID_PATH = os.path.join(MAP_DATA_DIR, "grid.csv")
@@ -37,6 +38,10 @@ KMA_UV_BASE_URL = f"http://apis.data.go.kr/1360000/LivingWthrIdxServiceV4/getUVI
 KFS_REALTIME_URL = "https://fd.forest.go.kr/ffas/pubConn/selectPublicFireShowList.do"
 KFS_WARNINGLIST_URL = "https://fd.forest.go.kr/ffas/new/getFireWarningList.do"
 KFS_LANDSLIDE_URL = f"https://www.safetydata.go.kr/V2/api/DSSP-IF-00735?serviceKey={KFS_LANDSLIDE_KEY}"
+
+""" moe api """
+MOE_FLOOD_URL = "https://n.flood.go.kr/main/getData.do?dataType=%5B%22rader%22%2C%22flood%22%5D&ymdhm="
+
 
 """ safemap api"""
 SAFEMAP_BASE_URL = "http://www.safemap.go.kr/openApiService/wms/getLayerData.do"

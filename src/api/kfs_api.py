@@ -126,4 +126,4 @@ def test_kfs_api():
 
 if __name__ == "__main__":
     #test_kfs_api()
-    get_kfs_warning_list()
+    get_kfs_warning_data()

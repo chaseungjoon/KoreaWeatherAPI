@@ -1,6 +1,7 @@
 from api.kma_api import get_all_weather_data, get_GK2A_fire_data, get_uv_data
 from api.kfs_api import get_kfs_fire_data, get_kfs_landslide_data, get_kfs_warning_data
 from api.nasa_api import get_firms_data
+from api.moe_api import get_flood_data
 from api.safemap_api import get_safemap_flood_data
 from csv_reader import load_grid, load_firms_fire_grid, load_GK2A_fire_grid, load_kfs_fire_grid, load_kfs_landslide_grid
 from src.csv_reader import load_uv_index_grid, load_kfs_warning_grid
@@ -51,6 +52,13 @@ from config import *
             get_kfs_fire_data()   # 산림청 실시간 산불현황 API
             
 3. 홍수 데이터
+
+    (실시간) 환경부 실시간 홍수정보 API
+        * 10분 단위 업데이트
+        * 4~6분 딜레이
+        * moe_data 폴더에 .csv로 저장
+        
+            get_flood_data()
 
     (실시간) Google Flood Forecast API
         * TBD
@@ -110,6 +118,7 @@ def fetch_recent():
     get_kfs_fire_data()
     draw_kfs_fire_grid()
 
+    # 산림청 실시간 산불예보
     get_kfs_warning_data()
     draw_kfs_warning_grid()
 
@@ -122,18 +131,15 @@ def fetch_recent():
     for i in range(3,13,3):
         draw_uv_index_grid(lookup_hours=i)
 
-def fetch_fire():
-    get_kfs_fire_data()
-    draw_kfs_fire_grid()
+    # 환경부 실시간 홍수 정보
+    get_flood_data()
 
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
     fetch_recent()
 
-    """ Load grids     
-    grid = List[ dict_1{}, dict_2{}, ... , dict_n{} ]
-    """
+    """ Load grids"""
     grid = load_grid()
     nasa_fire_grid = load_firms_fire_grid()
     GK2A_fire_grid = load_GK2A_fire_grid()
