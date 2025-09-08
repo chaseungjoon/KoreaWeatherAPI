@@ -125,5 +125,5 @@ def test_kfs_api():
     print(json.dumps(data2, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":
-    #test_kfs_api()
-    get_kfs_warning_data()
+    test_kfs_api()
+    #get_kfs_warning_data()
