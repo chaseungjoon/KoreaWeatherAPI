@@ -41,11 +41,6 @@
   - **제공 데이터** : 전국 381개소의 하천 수위정보, 홍수 위험도 제공 (주의, 경계, 심각)
   - **참고 문서** : [홍수정보시스템](https://n.flood.go.kr/main.do)
 
-### Google Flood Forcasting API (승인 대기중)
-  - **업데이트 주기**: Several times a day (약 4~6시간 간격)
-  - **제공 데이터**: 최근 홍수 status
-  - **참고 문서**: [Google Flood Forcasting](https://developers.google.com/flood-forecasting/rest?hl=ko)
-
 ### 침수흔적도 OpenAPI
   - **갱신주기**: 매년 1회 (연말)
   - **제공 데이터**: 침수흔적도 사진파일(png) (좌표 : 124 ~ 132E, 33 ~ 39N)

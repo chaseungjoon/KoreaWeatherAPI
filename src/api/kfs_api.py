@@ -124,6 +124,10 @@ def test_kfs_api():
     data2 = response2.json()
     print(json.dumps(data2, ensure_ascii=False, indent=2))
 
+    print("\n\n--------KFS FIRE WARNING DATA--------")
+    response = requests.get(KFS_WARNINGLIST_URL)
+    data = response.json()
+    print(json.dumps(data, ensure_ascii=False, indent=2))
+
 if __name__ == "__main__":
     test_kfs_api()
-    #get_kfs_warning_data()

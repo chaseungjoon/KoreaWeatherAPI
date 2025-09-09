@@ -9,3 +9,6 @@ Pillow
 huggingface_hub
 transformers
 opencv-python
+geopandas
+shapely
+matplotlib
