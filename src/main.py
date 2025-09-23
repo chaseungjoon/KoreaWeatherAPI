@@ -105,9 +105,8 @@ from config import *
 """
 
 def fetch_recent():
-    """ 기상청 AWS 실시간 데이터
+    # 기상청 AWS 실시간 데이터
     get_all_weather_data()
-    """
 
     """ Nasa FIRMS 화재정보
     get_firms_data()
@@ -145,8 +144,7 @@ def fetch_recent():
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
-    #fetch_recent()
-    draw_moe_flood_grid()
+    fetch_recent()
 
     """ Load grids"""
     grid = load_grid()
