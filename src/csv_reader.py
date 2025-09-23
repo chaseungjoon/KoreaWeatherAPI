@@ -231,9 +231,12 @@ def load_moe_flood_grid():
                 'OBSERVATION_POINT_NAME': row['obsnm'],
                 'OBSERVATION_POINT_CODE': row['obscd'],
                 'DATE': row['ymdhm'],
-                'WATER_LEVEL': float(row['wl']),
                 'WARNING_LEVEL': float(row['wrnwl']),
                 'ALERT_LEVEL': row['almwl']
             }
+            if row['wl']!='-':
+                item['WATER_LEVEL'] = float(row['wl'])
+            else:
+                item['WATER_LEVEL'] = -999
             result.append(item)
     return result

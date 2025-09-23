@@ -89,7 +89,26 @@
 | frfrOccrrTpcd | 05 | 발생 유형 코드 (코드표 필요) |
 | frfrOccrrStcd | 31 | 발생 원인 세부 코드 (코드표 필요) |
 
-## 1-2. KFS (산림청) 산사태 API `(kfs_data/landslide/*.csv)`
+## 1-2. KFS (산림청) 화재 주의보 API `(kfs_data/warning_list/*.csv)`
+
+### 실시간 산불 주의 지역 정보
+- **생산주기**: 24시간 (매일 오전 업데이트)
+- **웹사이트**: [산림청 산불 GIS 시스템](http://fd.forest.go.kr/ffas/gis/main.do)
+
+#### API 응답 필드
+
+| 필드명           | 값                   | 해석              |
+|---------------|---------------------|-----------------|
+| AREA          | 영덕군                 | 주소 (시군구)        |
+| AREA_ENG      | Yeongdeok-gun       | 영문주소 (시군구)      |
+| LOCATION      | 경상북도 영덕군            | 전체 주소 (도 + 시군구) |
+| WARNING_LEVEL | 관심                  | 화재 주의보 단계       |
+| DATE          | 2025-09-02 11:00    | 주의보 발표 시간       |
+| LAST_UPDATED  | 2025-09-02 01:15:59 | 주의보 마지막 업데이트 시간 |
+| PROVINCE_CODE | 47                  | 지역코드            |
+| CITY_CODE     | 770                 | 도시코드            |
+
+## 1-3. KFS (산림청) 산사태 API `(kfs_data/landslide/*.csv)`
 
 ### 실시간 산사태 예측 정보
 - **생산주기**: 5분단위
@@ -288,9 +307,9 @@
 
 ---
 
-## 3. MOE (환경부)
+# 3. MOE (환경부)
 
-### 3-1. 환경부 실시간 홍수 정보 API `(moe_data/*.csv)`
+## 3-1. 환경부 실시간 홍수 정보 API `(moe_data/*.csv)`
 
 #### 개요
 - **제공 데이터**: 하천 수위정보, 홍수 위험도 제공 (주의, 경계, 심각)
@@ -312,7 +331,7 @@
 
 ---
 
-## 4. NASA FIRMS API `(firms_data/*.csv)`
+# 4. NASA FIRMS API `(firms_data/*.csv)`
 
 ### 개요
 - **제공 데이터**: 위성 기반 화재 모니터링

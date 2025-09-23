@@ -105,8 +105,9 @@ from config import *
 """
 
 def fetch_recent():
-    # 기상청 AWS 실시간 데이터
+    """ 기상청 AWS 실시간 데이터
     get_all_weather_data()
+    """
 
     """ Nasa FIRMS 화재정보
     get_firms_data()
@@ -131,9 +132,11 @@ def fetch_recent():
     draw_kfs_landslide_grid()
 
     # 기상청 자외선 정보
+    """
     get_uv_data()
     for i in range(3,13,3):
         draw_uv_index_grid(lookup_hours=i)
+    """
 
     # 환경부 실시간 홍수 정보
     get_flood_data()
@@ -142,7 +145,8 @@ def fetch_recent():
 if __name__ == "__main__":
 
     """ Fetch most recent data"""
-    fetch_recent()
+    #fetch_recent()
+    draw_moe_flood_grid()
 
     """ Load grids"""
     grid = load_grid()
