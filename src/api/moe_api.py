@@ -38,9 +38,12 @@ def test_flood_api():
     rounded_time = rounded_time.replace(minute=(rounded_time.minute // 10) * 10)
     rounded_time -= timedelta(minutes=20)
     url = MOE_FLOOD_URL + rounded_time.strftime("%Y%m%d%H%M")
-    response = requests.get(url)
-    data = response.json()
-    print(data[0])
+    try:
+        response = requests.get(url)
+        data = response.json()
+        print(data[0])
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     test_flood_api()

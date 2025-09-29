@@ -114,20 +114,29 @@ def get_kfs_landslide_data():
 """ MONITORING API CALL """
 def test_kfs_api():
     print("--------KFS FIRE DATA--------")
-    response = requests.get(KFS_REALTIME_URL)
-    data = response.json()
-    print(json.dumps(data, ensure_ascii=False, indent=2))
+    try:
+        response = requests.get(KFS_REALTIME_URL)
+        data = response.json()
+        print(json.dumps(data, ensure_ascii=False, indent=2))
+    except Exception as e:
+        print(e)
 
     print("\n\n--------KFS LANDSLIDE DATA--------")
-    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
-    response2 = requests.get(KFS_LANDSLIDE_URL + "&returnType=json&numOfRows=10000&inqDt=" + yesterday)
-    data2 = response2.json()
-    print(json.dumps(data2, ensure_ascii=False, indent=2))
+    try:
+        yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
+        response2 = requests.get(KFS_LANDSLIDE_URL + "&returnType=json&numOfRows=10000&inqDt=" + yesterday)
+        data2 = response2.json()
+        print(json.dumps(data2, ensure_ascii=False, indent=2))
+    except Exception as e:
+        print(e)
 
     print("\n\n--------KFS FIRE WARNING DATA--------")
-    response = requests.get(KFS_WARNINGLIST_URL)
-    data = response.json()
-    print(json.dumps(data, ensure_ascii=False, indent=2))
+    try:
+        response = requests.get(KFS_WARNINGLIST_URL)
+        data = response.json()
+        print(json.dumps(data, ensure_ascii=False, indent=2))
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     test_kfs_api()
