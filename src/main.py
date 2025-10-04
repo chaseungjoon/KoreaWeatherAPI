@@ -106,7 +106,7 @@ from config import *
 
 def fetch_recent():
     # 기상청 AWS 실시간 데이터
-    get_all_weather_data()
+    #get_all_weather_data()
 
     """ Nasa FIRMS 화재정보
     get_firms_data()
