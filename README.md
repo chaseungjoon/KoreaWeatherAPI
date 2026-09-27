@@ -1,361 +1,387 @@
-# 실시간 종합 재난 상황
+# Korea Weather API
 
-- 화재 - 산림청 실시간산불정보 API
-- 자외선 - 기상청 생활기상지수 API
-- 홍수 - 환경부 실시간홍수정보 API
-- 산사태 - 산림청 실시간산사태예측 API
-- 폭설
-- 안개 - 기상청 AWS매분자료시정 API
-
----
-
-# 데이터 소스
+Collects weather observations and disaster data as CSV files. [한국어](README_kor.md)
 
-> ## 기상 관측
-### **기상청 OpenAPI**
-  - **제공 데이터**: 기온, 기압, 운고, 운량, 가시거리  
-  - **업데이트 주기**: 1분 단위 (실제 반영 약 5~7분 지연)
+## Contents
 
-> ## 자외선 관측
+- [Fetching data](#fetching-data)
+- [Monitored hazards](#monitored-hazards)
+- [Data sources](#data-sources)
+- [Korea Forest Service (KFS)](#1-korea-forest-service-kfs)
+- [Korea Meteorological Administration (KMA)](#2-korea-meteorological-administration-kma)
+- [Ministry of Environment (MOE)](#3-ministry-of-environment-moe)
+- [NASA FIRMS](#4-nasa-firms-api)
 
-### **기상청 OpenAPI**
-  - **제공 데이터**: 현 시간으로부터 75시간 후 까지 각 지역별 자외선 지수
-  - **업데이트 주기**: 매일 8회, 3시간 단위 (0시, 3시, ... , 21시)
-
-> ## 화재 모니터링
-
-### **산림청 API** 
-  - **업데이트 주기**: 실시간, 화재 신고 시 즉각 업데이트
+## Fetching data
 
-### **NASA FIRMS API**  
-  - **업데이트 주기**: 일 2회 (01–03시, 13–14시)  
-
-### **천리안2호 API**   
-  - **업데이트 주기**: 2분 단위 (실제 반영 약 10시간 지연)  
-  - **참고 문서**: [메타데이터 링크](https://datasvc.nmsc.kma.go.kr/datasvc/html/base/cmm/selectPage.do?page=static.software)
+The `*_data/` directories contain only a few example snapshots, not a complete archive. Install dependencies with `pip install -r requirements.txt`, then set the required API keys as environment variables (see `src/config.py`). Call collectors in `src/api/` to fetch more data.
 
-> ## 홍수 모니터링
+```bash
+PYTHONPATH=. python -c "from src.api.nasa_api import get_firms_data; get_firms_data(5)"
+```
 
-### 환경부 실시간 홍수 정보 API
-  - **업데이트 주기** : 10분 단위 (실제 반영 약 5분 지연)
-  - **제공 데이터** : 전국 381개소의 하천 수위정보, 홍수 위험도 제공 (주의, 경계, 심각)
-  - **참고 문서** : [홍수정보시스템](https://n.flood.go.kr/main.do)
+This fetches the previous five days of FIRMS data (`NASA_FIRMS_MAP_KEY` required). For specific dates, change `inqDt` in `src/api/kfs_api.py`, `time` or `date` in `src/api/kma_api.py`, or `ymdhm` in `src/api/moe_api.py`. AWS and real-time wildfire calls request the latest data; historical availability depends on each provider.
 
-### 침수흔적도 OpenAPI
-  - **갱신주기**: 매년 1회 (연말)
-  - **제공 데이터**: 침수흔적도 사진파일(png) (좌표 : 124 ~ 132E, 33 ~ 39N)
-  - **참고 문서**: [침수흔적도 OpenAPI](https://safemap.go.kr/opna/data/dataView.do)
+## Monitored hazards
 
-  - OpenCV 활용 침수흔적도 픽셀 좌표 추출 -> csv 저장 `(safemap_data/csv/*.csv)`
-    - Error rate : 20% 
+- Wildfire — KFS real-time wildfire API
+- UV exposure — KMA living weather index API
+- Flood — MOE real-time flood API
+- Landslide — KFS landslide forecast API
+- Heavy snow — data source not specified
+- Fog — KMA AWS minute visibility API
 
-> ## 산사태 모니터링
+## Data sources
 
-### 산림청 산사태 예측 API
-  - **업데이트 주기**: 5분단위 (라고 나와있지만 실질적으로 매일 오전 갱신 되는듯?)
-  - **제공 데이터**: 산사태 발생 가능성이 높은 지역을 예측
-  - **참고문서**: [산림청 산사태 예측정보 OpenAPI](https://www.safetydata.go.kr/disaster-data/view?dataSn=696)
+### Weather observations
 
----
+#### KMA OpenAPI
 
-# 1. KFS (산림청)
+- **Data:** temperature, pressure, cloud height and cover, visibility
+- **Update interval:** one minute (approximately 5–7 minutes of publication delay)
 
-## 1-1. KFS (산림청) 화재 API `(kfs_data/*.csv)`
+### UV observations
 
-### 실시간 산불 정보
-- **생산주기**: 화재 신고 시 실시간 업데이트  
-- **웹사이트**: [산림청 산불 GIS 시스템](http://fd.forest.go.kr/ffas/gis/main.do)
-
-#### API 응답 필드
-
-| 필드명 | 값 | 해석 |
-|--------|----|------|
-| frfrInfoId | 398504 | 산불 사건 고유 ID |
-| frfrFrngDtm | 2025-08-22 14:41:22 | 산불 발생 시각 |
-| frfrSttmnDt | 20250822 | 신고 일자 (YYYYMMDD) |
-| frfrSttmnHms | 144122 | 신고 시각 (HHMMSS → 14:41:22) |
-| frfrSttmnAddr | 충청북도 음성군 감곡면 영산리 | 신고 행정 주소 |
-| frfrSttmnAddrDe | 충청북도 음성군 감곡면 영산리 산55-3임 | 상세 주소 |
-| frfrLctnXcrd | 127.67243000000057 | 발생 위치 X좌표 (경도) |
-| frfrLctnYcrd | 37.08104000024055 | 발생 위치 Y좌표 (위도) |
-| frfrSttmnLctnXcrd | 127.67243000000029 | 신고 위치 X좌표 (경도) |
-| frfrSttmnLctnYcrd | 37.08104000012027 | 신고 위치 Y좌표 (위도) |
-| lgdngCd | 4377037026 | 행정동 코드 |
-| frfrPrgrsStcd | 02 | 진행 상태 코드 |
-| frfrPrgrsStcdNm | 진화중 | 진행 상태명 |
-| frfrPotfrRt | 70 | 진화율(%) |
-| frfrStepIssuCd | 00 | 대응 단계 코드 |
-| frfrStepIssuNm | 초기 대응 | 대응 단계명 |
-| frfrOccrrTpcd | 05 | 발생 유형 코드 (코드표 필요) |
-| frfrOccrrStcd | 31 | 발생 원인 세부 코드 (코드표 필요) |
+#### KMA OpenAPI
 
-## 1-2. KFS (산림청) 화재 주의보 API `(kfs_data/warning_list/*.csv)`
+- **Data:** regional UV index forecasts up to 75 hours ahead
+- **Update interval:** eight times daily, every three hours (00:00, 03:00, …, 21:00)
 
-### 실시간 산불 주의 지역 정보
-- **생산주기**: 24시간 (매일 오전 업데이트)
-- **웹사이트**: [산림청 산불 GIS 시스템](http://fd.forest.go.kr/ffas/gis/main.do)
+### Fire monitoring
 
-#### API 응답 필드
-
-| 필드명           | 값                   | 해석              |
-|---------------|---------------------|-----------------|
-| AREA          | 영덕군                 | 주소 (시군구)        |
-| AREA_ENG      | Yeongdeok-gun       | 영문주소 (시군구)      |
-| LOCATION      | 경상북도 영덕군            | 전체 주소 (도 + 시군구) |
-| WARNING_LEVEL | 관심                  | 화재 주의보 단계       |
-| DATE          | 2025-09-02 11:00    | 주의보 발표 시간       |
-| LAST_UPDATED  | 2025-09-02 01:15:59 | 주의보 마지막 업데이트 시간 |
-| PROVINCE_CODE | 47                  | 지역코드            |
-| CITY_CODE     | 770                 | 도시코드            |
-
-## 1-3. KFS (산림청) 산사태 API `(kfs_data/landslide/*.csv)`
-
-### 실시간 산사태 예측 정보
-- **생산주기**: 5분단위
-
-### 요청변수
-
-| 항목명(국문)              | 항목명(영문)  | 타입     | 항목크기 | 항목구분 | 항목설명                |
-|---------------------------|---------------|----------|----------|----------|-------------------------|
-| 서비스키                  | serviceKey    | STRING   | 50       | Y        | 서비스키                |
-| 페이지당개수              | numOfRows     | NUMBER   | 30       | N        | 페이지당개수            |
-| 페이지번호                | pageNo        | NUMBER   | 30       | N        | 페이지번호              |
-| 응답타입(json,xml)        | returnType    | VARCHAR  | 30       | N        | 응답타입(json,xml)      |
-| 조회시작일자(YYYYMMDD)    | inqDt         | STRING   | -        | N        | 조회시작일자(YYYYMMDD) |
-
-### API 응답 필드
-
-| 항목명(국문) | 항목명(영문)   | 타입 | 항목크기 | 항목구분 | 항목설명     |
-|--------------|----------------|------|----------|----------|--------------|
-| 산사태예보명 | LNLD_FRCST_NM  | -    | 20       | Y        | 산사태예보명 |
-| 시군구명     | SGG_NM         | -    | 100      | Y        | 시군구명     |
-| 예측분석일시 | PREDC_ANLS_DT  | -    | 50       | Y        | 예측분석일시 |
-
-
----
-
-# 2. KMA (기상청)
-
-## 2-1. 기상청 AWS (방재기상관측)
-
-- **생산주기**: 매 분 (약 3~5분 지연)  
-- **관측 지점**: 전국 510개소 (`map_data/grid.csv` 참고)
-
-
-### 2-1-1. AWS 매분자료 `(weather_data/(timestamp)/AWS_*.csv)`
-
-#### 제공 항목
-- 풍향/풍속 (1분 평균, 10분 평균, 최대 순간)
-- 기온 (1분 평균)
-- 강수 (강수감지, 15분·60분·12시간·일 누적 강수량)
-- 상대습도
-- 현지기압, 해면기압
-- 이슬점온도  
-
-| Index   | 설명         | 단위 / 범위                                   |
-|---------|--------------|---------------------------------------------|
-| WD1     | 1분 평균 풍향 | degree (0-N, 90-E, 180-S, 270-W, 360-무풍) |
-| WS1     | 1분 평균 풍속 | m/s                                         |
-| WDS     | 최대 순간 풍향 | degree                                      |
-| WSS     | 최대 순간 풍속 | m/s                                         |
-| WD10    | 10분 평균 풍향 | degree                                      |
-| WS10    | 10분 평균 풍속 | m/s                                         |
-| TA      | 1분 평균 기온 | °C                                          |
-| RE      | 강수감지      | 0=무강수, 0이 아니면 강수                    |
-| RN-15m  | 15분 누적 강수량 | mm                                        |
-| RN-60m  | 60분 누적 강수량 | mm                                        |
-| RN-12H  | 12시간 누적 강수량 | mm                                      |
-| RN-DAY  | 일 누적 강수량  | mm                                         |
-| HM      | 1분 평균 상대습도 | %                                        |
-| PA      | 1분 평균 현지기압 | hPa                                      |
-| PS      | 1분 평균 해면기압 | hPa                                      |
-| TD      | 이슬점온도    | °C                                          |
-
-
-### 2-1-2. AWS 운고·운량 `(weather_data/(timestamp)/AWS_cloud_*.csv)`
-
-#### 제공 항목
-- 하층/중층/상층 운고
-- 전운량  
-
-| Index   | 설명     | 단위 | 비고                  |
-|---------|----------|------|-----------------------|
-| CH_LOW  | 하층 운고 | m    | 7620m = 구름 없음     |
-| CH_MID  | 중층 운고 | m    | -                     |
-| CH_TOP  | 상층 운고 | m    | -                     |
-| CA_TOT  | 전운량   | %    | -                     |
-
-
-### 2-1-3. AWS 초상온도 `(weather_data/(timestamp)/AWS_temp_*.csv)`
-
-#### 제공 항목
-- 기온, 이슬점온도, 초상온도, 지면온도
-- 상대습도
-- 지중온도 (5cm ~ 5.0m)
-- 현지기압, 해면기압  
-
-| Index  | 설명             | 단위 | 비고                                    |
-|--------|------------------|------|-----------------------------------------|
-| TA     | 1분 평균 기온     | °C   | -                                       |
-| HM     | 1분 평균 상대습도 | %    | -                                       |
-| TD     | 1분 평균 이슬점온도 | °C | -                                       |
-| TG     | 1분 평균 초상온도 | °C   | -                                       |
-| TS     | 1분 평균 지면온도 | °C   | -                                       |
-| TE0.05 | 5cm 지중온도      | °C   | -                                       |
-| TE0.1  | 10cm 지중온도     | °C   | -                                       |
-| TE0.2  | 20cm 지중온도     | °C   | -                                       |
-| TE0.3  | 30cm 지중온도     | °C   | -                                       |
-| TE0.5  | 50cm 지중온도     | °C   | -                                       |
-| TE1.0  | 1.0m 지중온도     | °C   | -                                       |
-| TE1.5  | 1.5m 지중온도     | °C   | -                                       |
-| TE3.0  | 3.0m 지중온도     | °C   | -                                       |
-| TE5.0  | 5.0m 지중온도     | °C   | -                                       |
-| PA     | 1분 평균 현지기압  | hPa  | -                                       |
-| PS     | 1분 평균 해면기압  | hPa  | -                                       |
-
-> 관측값 -50 이하일 경우: 관측 없음 또는 에러 처리  
-> 지중온도는 일부 지점만 관측됨  
-
-
-### 2-1-4. AWS 시정 (가시거리) `(weather_data/(timestamp)/AWS_vis_*.csv)`
-
-#### 제공 항목
-- 가시거리 (1분 / 10분 평균)
-- 안개/현천
-
-| Index | 설명             | 단위/비고                                   |
-|-------|------------------|--------------------------------------------|
-| S     | 장비구분          | 1=안개관측망, 2=첨단화 장비                 |
-| VIS1  | 1분 평균 시정     | m (샘플링 1초, 첨단화 장비)                  |
-| VIS10 | 10분 평균 시정    | m (안개관측망 전용)                         |
-| WW1   | 1분 순간 현천 코드| 샘플링 1초, 첨단화 장비                     |
-| WW15  | 15분 평균 현천 코드| 안개관측망 전용                            |
-
-#### 현천 코드표
-| 코드 범위 | 의미   |
-|-----------|--------|
-| 0~2       | 맑음   |
-| 4         | 연무   |
-| 10        | 박무   |
-| 30        | 안개   |
-| 40~42     | 비     |
-| 50~59     | 안개비 |
-| 60~68     | 비     |
-| 71~76     | 눈     |
-
-
-## 2-2. 천리안2호 인공위성 API `(GK2A_data/csv/*.csv)`
-
-### 개요
-- **제공 데이터**: 화재 의심 지점, .nc파일
-- **생산주기**: 약 2분마다 갱신  
-- **데이터 지연**: 약 10시간  
-- **적용 영역**: 한반도 전역 및 Extended Area  
-- **성능**: True Positive 87.17%, False Positive 15.20%  
-
-#### API 응답 구조
-
-| Column | 예시 값 | 설명                                               |
-|--------|------|--------------------------------------------------|
-| `lat`  | 37.48554 | 화재 탐지 지점의 위도 (도)                         |
-| `lon`  | 129.0597 | 화재 탐지 지점의 경도 (도)                         |
-| `FF`   | 0,1  | 화재 탐지 플래그 (0: 화재 없음, 1: 화재 있음)      |
-| `DQF_FF` | 10   | 데이터의 신뢰성 (0~13)                             |
-
-#### `DQF_FF` 코드표
-| 코드 | 의미                                                           |
-|------|----------------------------------------------------------------|
-| 0    | Invalid, 관측 범위 외 (SZA > 70°)                             |
-| 1    | Invalid, 마스킹 영역 또는 입력 데이터 누락                     |
-| 2    | Land                                                           |
-| 3    | Water                                                          |
-| 4    | Cloud                                                          |
-| 5    | Rejection by cloud test                                        |
-| 6    | Rejection by bare soil, urban and water test                   |
-| 7    | Potential Fire                                                 |
-| 8    | Fire                                                           |
-| 9    | Absolute Fire                                                  |
-| 10   | Industrial Heat Detection                                      |
-| 12   | Stability test                                                 |
-| 13   | Probably Cloud                                                 |
-
-## 2-3. 생활기상지수 자외선
-
-### 개요
-- **제공 데이터**: 자외선 수치 (0~11이상)
-- **생산주기**: 3시간, 하루 8회 (0시, 3시, ... , 21시)
-- **적용 영역**: 한반도 
-
-#### API 응답 필드
-
-| Column | 예시 값       | 설명                                                        |
-|--------|------------|-----------------------------------------------------------|
-| areaNo | 110000000  | 행정구역코드 (map_data/korea_administrative_zone_code.csv 에 저장) |
-| date   | 2025090118 | 요청 시간 (YYYYmmddHH) |
-| h0~h75 | 8          | h#n은 n 시간 후의 자외선 인덱스 |
-
-#### 자외선 지수 표
-
-| 단계   | 지수범위  |
-|------|-------|
-| 위험   | 11 이상 |
-| 매우높음 | 8~10  |
-| 높음   | 6~7   |
-| 보통   | 3~5   |
-| 낮음   | 0~2   |
-
-
----
-
-# 3. MOE (환경부)
-
-## 3-1. 환경부 실시간 홍수 정보 API `(moe_data/*.csv)`
-
-#### 개요
-- **제공 데이터**: 하천 수위정보, 홍수 위험도 제공 (주의, 경계, 심각)
-- **생산주기**: 10분 단위 (약 5분 지연)
-- **적용 영역**: 전국 381개소
-
-#### API 응답 필드
-| Column | 설명        | 예시               |
-|--------|-----------|------------------|
-| lon    | 경도        | 128.27           |
-| lat    | 위도        | 35.728           |
-| obsnm  | 교량명       | 고령군(회천교)         |
-| ymdhm  | 날짜        | 2025-09-07 14:30 |
-| wl     | 현재수위      | 3.25             |
-| wrnwl  | 경고수위 (고정값) | 4.5              |
-| almwl  | 주의수위 (고정값) | 5.0              |
-
-
-
----
-
-# 4. NASA FIRMS API `(firms_data/*.csv)`
-
-### 개요
-- **제공 데이터**: 위성 기반 화재 모니터링
-- **생산주기**: 약 12시간마다 갱신 (일 2회)
-- **적용 영역**: 한반도 전역  
-
-#### API 응답 구조
-
-| Column                         | 예시 값    | 설명                                   |
-|--------------------------------|-----------|--------------------------------------|
-| `latitude`                     | 37.48554  | 화재 탐지 지점 위도 (도)               |
-| `longitude`                    | 129.05978 | 화재 탐지 지점 경도 (도)               |
-| `frp`                          | 10.3      | Fire Radiative Power (MW, 화재 강도)   |
-| `daynight`                     | D         | 낮/밤 여부 (D=Day, N=Night)            |
-| `acq_Date`                     | 2025-08-08| 위성 관측 날짜 (UTC)                   |
-| `acq_Time`                     | 0950      | 위성 관측 시간 (UTC, HHMM)             |
-| `satellite`                    | Terra     | 관측 위성                              |
-| `instrument`                   | MODIS     | 관측 센서                              |
-| `version`                      | 6.1NRT    | 알고리즘 버전 (NRT = Near Real Time)   |
-| **VIIRS_NOAA20_NRT - confidence** | n       | 화재 신뢰도 (l=low, n=normal, h=high) |
-| **VIIRS_NOAA20_NRT - bright_ti4** | 331.48  | 4번 밴드 밝기 (Kelvin)                 |
-| **VIIRS_NOAA20_NRT - bright_ti5** | 302.14  | 5번 밴드 밝기 (Kelvin)                 |
-| **MODIS_NRT - confidence**        | 65      | 화재 신뢰도 (%)                        |
-| **MODIS_NRT - brightness**        | 313.81  | 화재 픽셀 밝기 온도 (Kelvin)           |
-| **MODIS_NRT - bright_t31**        | 301.66  | 31번 밴드 밝기 (Kelvin)                |
-
----
+#### KFS API
+
+- **Update interval:** real time, when a fire is reported
+
+#### NASA FIRMS API
+
+- **Update interval:** twice daily (01:00–03:00 and 13:00–14:00)
+
+#### GK2A API
+
+- **Update interval:** every two minutes (approximately 10 hours of publication delay)
+- **Reference:** [GK2A metadata](https://datasvc.nmsc.kma.go.kr/datasvc/html/base/cmm/selectPage.do?page=static.software)
+
+### Flood monitoring
+
+#### MOE real-time flood API
+
+- **Update interval:** every 10 minutes (approximately five minutes of publication delay)
+- **Data:** river levels at 381 sites nationwide and flood risk (caution, warning, severe)
+- **Reference:** [Flood Information System](https://n.flood.go.kr/main.do)
+
+#### Flood trace OpenAPI
+
+- **Update interval:** annually, at year-end
+- **Data:** flood trace PNGs (124–132°E, 33–39°N)
+- **Reference:** [Flood Trace OpenAPI](https://safemap.go.kr/opna/data/dataView.do)
+- OpenCV extracts flood trace pixel coordinates into CSV (`safemap_data/csv/*.csv`); error rate: 20%.
+
+### Landslide monitoring
+
+#### KFS landslide forecast API
+
+- **Update interval:** documented as every five minutes (observed updates appear to occur each morning)
+- **Data:** forecasts for areas with high landslide probability
+- **Reference:** [KFS landslide forecast OpenAPI](https://www.safetydata.go.kr/disaster-data/view?dataSn=696)
+
+## 1. Korea Forest Service (KFS)
+
+### 1-1. Wildfire API (`kfs_data/*.csv`)
+
+#### Real-time wildfire information
+
+- **Production:** updated when a fire is reported
+- **Website:** [KFS wildfire GIS](http://fd.forest.go.kr/ffas/gis/main.do)
+
+##### Response fields
+
+| Field | Example | Meaning |
+|---|---|---|
+| frfrInfoId | 398504 | Unique wildfire incident ID |
+| frfrFrngDtm | 2025-08-22 14:41:22 | Fire start time |
+| frfrSttmnDt | 20250822 | Report date (YYYYMMDD) |
+| frfrSttmnHms | 144122 | Report time (HHMMSS → 14:41:22) |
+| frfrSttmnAddr | 충청북도 음성군 감곡면 영산리 | Reported administrative address |
+| frfrSttmnAddrDe | 충청북도 음성군 감곡면 영산리 산55-3임 | Detailed address |
+| frfrLctnXcrd | 127.67243000000057 | Fire longitude |
+| frfrLctnYcrd | 37.08104000024055 | Fire latitude |
+| frfrSttmnLctnXcrd | 127.67243000000029 | Reported longitude |
+| frfrSttmnLctnYcrd | 37.08104000012027 | Reported latitude |
+| lgdngCd | 4377037026 | Administrative area code |
+| frfrPrgrsStcd | 02 | Progress status code |
+| frfrPrgrsStcdNm | 진화중 | Progress status (firefighting in progress) |
+| frfrPotfrRt | 70 | Containment rate (%) |
+| frfrStepIssuCd | 00 | Response stage code |
+| frfrStepIssuNm | 초기 대응 | Response stage (initial response) |
+| frfrOccrrTpcd | 05 | Incident type code (lookup needed) |
+| frfrOccrrStcd | 31 | Detailed cause code (lookup needed) |
+
+### 1-2. Fire warning API (`kfs_data/warning_list/*.csv`)
+
+#### Real-time wildfire warning areas
+
+- **Production:** every 24 hours (morning update)
+- **Website:** [KFS wildfire GIS](http://fd.forest.go.kr/ffas/gis/main.do)
+
+##### Response fields
+
+| Field | Example | Meaning |
+|---|---|---|
+| AREA | 영덕군 | City/county/district |
+| AREA_ENG | Yeongdeok-gun | English city/county/district name |
+| LOCATION | 경상북도 영덕군 | Full address (province + city/county/district) |
+| WARNING_LEVEL | 관심 | Fire warning level (attention) |
+| DATE | 2025-09-02 11:00 | Warning issue time |
+| LAST_UPDATED | 2025-09-02 01:15:59 | Last update time |
+| PROVINCE_CODE | 47 | Province code |
+| CITY_CODE | 770 | City code |
+
+### 1-3. Landslide API (`kfs_data/landslide/*.csv`)
+
+#### Real-time landslide forecasts
+
+- **Production:** every five minutes
+
+#### Request parameters
+
+| Parameter | API name | Type | Size | Required | Description |
+|---|---|---|---|---|---|
+| Service key | serviceKey | STRING | 50 | Yes | API service key |
+| Rows per page | numOfRows | NUMBER | 30 | No | Rows per page |
+| Page number | pageNo | NUMBER | 30 | No | Page number |
+| Response format | returnType | VARCHAR | 30 | No | JSON or XML |
+| Query start date | inqDt | STRING | — | No | YYYYMMDD |
+
+#### Response fields
+
+| Field | API name | Type | Size | Required | Description |
+|---|---|---|---|---|---|
+| Landslide forecast name | LNLD_FRCST_NM | — | 20 | Yes | Forecast name |
+| City/county/district | SGG_NM | — | 100 | Yes | Area name |
+| Prediction analysis time | PREDC_ANLS_DT | — | 50 | Yes | Analysis time |
+
+## 2. Korea Meteorological Administration (KMA)
+
+### 2-1. AWS (automated weather stations)
+
+- **Production:** every minute (approximately 3–5 minutes of delay)
+- **Stations:** 510 nationwide (see `map_data/grid.csv`)
+
+#### 2-1-1. AWS minute observations (`kma_data/<timestamp>/AWS_*.csv`)
+
+##### Measurements
+
+- Wind direction and speed (one-minute mean, ten-minute mean, maximum gust)
+- Air temperature (one-minute mean)
+- Precipitation (detection; 15-minute, 60-minute, 12-hour, and daily totals)
+- Relative humidity
+- Local and sea-level pressure
+- Dew point
+
+| Index | Meaning | Unit / range |
+|---|---|---|
+| WD1 | One-minute mean wind direction | degrees (0=N, 90=E, 180=S, 270=W, 360=calm) |
+| WS1 | One-minute mean wind speed | m/s |
+| WDS | Maximum gust direction | degrees |
+| WSS | Maximum gust speed | m/s |
+| WD10 | Ten-minute mean wind direction | degrees |
+| WS10 | Ten-minute mean wind speed | m/s |
+| TA | One-minute mean air temperature | °C |
+| RE | Precipitation detection | 0=no rain; nonzero=rain |
+| RN-15m | 15-minute accumulated precipitation | mm |
+| RN-60m | 60-minute accumulated precipitation | mm |
+| RN-12H | 12-hour accumulated precipitation | mm |
+| RN-DAY | Daily accumulated precipitation | mm |
+| HM | One-minute mean relative humidity | % |
+| PA | One-minute mean local pressure | hPa |
+| PS | One-minute mean sea-level pressure | hPa |
+| TD | Dew point temperature | °C |
+
+#### 2-1-2. AWS cloud height and cover (`kma_data/<timestamp>/AWS_cloud_*.csv`)
+
+##### Measurements
+
+- Low, middle, and upper cloud height
+- Total cloud cover
+
+| Index | Meaning | Unit | Note |
+|---|---|---|---|
+| CH_LOW | Low cloud height | m | 7620 m = no clouds |
+| CH_MID | Middle cloud height | m | — |
+| CH_TOP | Upper cloud height | m | — |
+| CA_TOT | Total cloud cover | % | — |
+
+#### 2-1-3. AWS surface and soil temperature (`kma_data/<timestamp>/AWS_temp_*.csv`)
+
+##### Measurements
+
+- Air, dew point, grass minimum, and ground surface temperature
+- Relative humidity
+- Soil temperature (5 cm–5 m)
+- Local and sea-level pressure
+
+| Index | Meaning | Unit |
+|---|---|---|
+| TA | One-minute mean air temperature | °C |
+| HM | One-minute mean relative humidity | % |
+| TD | One-minute mean dew point | °C |
+| TG | One-minute mean grass minimum temperature | °C |
+| TS | One-minute mean ground surface temperature | °C |
+| TE0.05 | Soil temperature at 5 cm | °C |
+| TE0.1 | Soil temperature at 10 cm | °C |
+| TE0.2 | Soil temperature at 20 cm | °C |
+| TE0.3 | Soil temperature at 30 cm | °C |
+| TE0.5 | Soil temperature at 50 cm | °C |
+| TE1.0 | Soil temperature at 1.0 m | °C |
+| TE1.5 | Soil temperature at 1.5 m | °C |
+| TE3.0 | Soil temperature at 3.0 m | °C |
+| TE5.0 | Soil temperature at 5.0 m | °C |
+| PA | One-minute mean local pressure | hPa |
+| PS | One-minute mean sea-level pressure | hPa |
+
+Values of −50 or below indicate a missing observation or error. Soil temperature is measured at selected stations only.
+
+#### 2-1-4. AWS visibility (`kma_data/<timestamp>/AWS_vis_*.csv`)
+
+##### Measurements
+
+- Visibility (one-minute and ten-minute mean)
+- Fog and present weather
+
+| Index | Meaning | Unit / note |
+|---|---|---|
+| S | Instrument type | 1=fog network; 2=modernized equipment |
+| VIS1 | One-minute mean visibility | m; one-second sampling, modernized equipment |
+| VIS10 | Ten-minute mean visibility | m; fog network only |
+| WW1 | One-minute instantaneous weather code | one-second sampling, modernized equipment |
+| WW15 | 15-minute mean weather code | fog network only |
+
+##### Present weather codes
+
+| Code | Meaning |
+|---|---|
+| 0–2 | Clear |
+| 4 | Haze |
+| 10 | Mist |
+| 30 | Fog |
+| 40–42 | Rain |
+| 50–59 | Drizzle |
+| 60–68 | Rain |
+| 71–76 | Snow |
+
+### 2-2. GK2A satellite API (`GK2A_data/csv/*.csv`)
+
+#### Overview
+
+- **Data:** suspected fire locations, delivered as NetCDF (`.nc`)
+- **Production:** approximately every two minutes
+- **Data delay:** approximately 10 hours
+- **Coverage:** Korean Peninsula and extended area
+- **Performance:** true positive 87.17%; false positive 15.20%
+
+##### Response fields
+
+| Column | Example | Meaning |
+|---|---|---|
+| `lat` | 37.48554 | Fire detection latitude (degrees) |
+| `lon` | 129.0597 | Fire detection longitude (degrees) |
+| `FF` | 0, 1 | Fire flag (0=no fire; 1=fire) |
+| `DQF_FF` | 10 | Data quality flag (0–13) |
+
+##### `DQF_FF` codes
+
+| Code | Meaning |
+|---|---|
+| 0 | Invalid; outside observation range (SZA > 70°) |
+| 1 | Invalid; masked area or missing input |
+| 2 | Land |
+| 3 | Water |
+| 4 | Cloud |
+| 5 | Rejected by cloud test |
+| 6 | Rejected by bare soil, urban, and water test |
+| 7 | Potential fire |
+| 8 | Fire |
+| 9 | Absolute fire |
+| 10 | Industrial heat detection |
+| 12 | Stability test |
+| 13 | Probably cloud |
+
+### 2-3. Living weather index: UV (`kma_data/uv/*.csv`)
+
+#### Overview
+
+- **Data:** UV index (0 to 11+)
+- **Production:** every three hours, eight times daily (00:00, 03:00, …, 21:00)
+- **Coverage:** Korean Peninsula
+
+##### Response fields
+
+| Column | Example | Meaning |
+|---|---|---|
+| areaNo | 110000000 | Administrative area code (see `map_data/korea_administrative_zone_code.csv`) |
+| date | 2025090118 | Request time (YYYYMMDDHH) |
+| h0–h75 | 8 | UV index `n` hours ahead in field `h<n>` |
+
+##### UV index levels
+
+| Level | Index |
+|---|---|
+| Extreme | 11+ |
+| Very high | 8–10 |
+| High | 6–7 |
+| Moderate | 3–5 |
+| Low | 0–2 |
+
+## 3. Ministry of Environment (MOE)
+
+### 3-1. Real-time flood API (`moe_data/*.csv`)
+
+#### Overview
+
+- **Data:** river levels and flood risk (caution, warning, severe)
+- **Production:** every ten minutes (approximately five minutes of delay)
+- **Coverage:** 381 sites nationwide
+
+#### Response fields
+
+| Column | Meaning | Example |
+|---|---|---|
+| lon | Longitude | 128.27 |
+| lat | Latitude | 35.728 |
+| obsnm | Observation site / bridge | 고령군(회천교) |
+| ymdhm | Date and time | 2025-09-07 14:30 |
+| wl | Current water level | 3.25 |
+| wrnwl | Warning level (fixed) | 4.5 |
+| almwl | Caution level (fixed) | 5.0 |
+
+## 4. NASA FIRMS API
+
+#### Overview
+
+- **Output:** `firms_data/*.csv`
+- **Data:** satellite-based fire monitoring
+- **Production:** approximately every 12 hours (twice daily)
+- **Coverage:** Korean Peninsula
+
+##### Response fields
+
+| Column | Example | Meaning |
+|---|---|---|
+| `latitude` | 37.48554 | Fire detection latitude (degrees) |
+| `longitude` | 129.05978 | Fire detection longitude (degrees) |
+| `frp` | 10.3 | Fire Radiative Power (MW; fire intensity) |
+| `daynight` | D | Day/night (D=day, N=night) |
+| `acq_date` | 2025-08-08 | Satellite observation date (UTC in API response) |
+| `acq_time` | 0950 | Satellite observation time (UTC, HHMM, in API response) |
+| `satellite` | Terra | Observing satellite |
+| `instrument` | MODIS | Observing sensor |
+| `version` | 6.1NRT | Algorithm version (NRT=near real time) |
+| **VIIRS_NOAA20_NRT — confidence** | n | Fire confidence (l=low, n=normal, h=high) |
+| **VIIRS_NOAA20_NRT — bright_ti4** | 331.48 | Band 4 brightness temperature (K) |
+| **VIIRS_NOAA20_NRT — bright_ti5** | 302.14 | Band 5 brightness temperature (K) |
+| **MODIS_NRT — confidence** | 65 | Fire confidence (%) |
+| **MODIS_NRT — brightness** | 313.81 | Fire-pixel brightness temperature (K) |
+| **MODIS_NRT — bright_t31** | 301.66 | Band 31 brightness temperature (K) |
+
+The collector converts `acq_date` and `acq_time` from UTC to Korea Standard Time in saved CSV files.
